@@ -19,12 +19,7 @@ def plot():
     X_data = [title for title in data.columns if 'X' in title]
     Y_data = [title for title in data.columns if 'Y' in title]
 
-    for i in range(0, len(X_data)):
-        if i > 3:
-            if i % 3 == 0:
-                sns.lineplot(x=X_data[i], y=Y_data[i], data=data, ax=ax, label='L = {}u'.format(i*2+2))
-        else:
-            sns.lineplot(x=X_data[i], y=Y_data[i], data=data, ax=ax, label='L = {}u'.format(i*2+2))
+    sns.lineplot(x=X_data[0], y=Y_data[0], data=data, ax=ax)
 
     plt.xscale('log')
     plt.title('$g_m/I_D$ Versus $I_N$')
