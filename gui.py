@@ -1,76 +1,47 @@
-import customtkinter as ctk
+import tkinter
+import customtkinter
+
+from matplotlib.backends.backend_tkagg import (
+    FigureCanvasTkAgg, NavigationToolbar2Tk)
+# Implement the default Matplotlib key bindings.
+from matplotlib.backend_bases import key_press_handler
+from matplotlib.figure import Figure
+
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import pandas as pd
-import seaborn as sns
 
-class ctkApp:
-        
-    def __init__(self):
-        ctk.set_appearance_mode("dark")
-        self.root = ctk.CTk()
-        self.root.geometry("1200x400+200x200")
-        self.root.title("Dynamic Scatterplot")
-        self.root.update()
-        self.frame = ctk.CTkFrame(master=self.root,
-                                  height= self.root.winfo_height()*0.95,
-                                  width = self.root.winfo_width()*0.66,
-                                  fg_color="darkblue")
-        self.frame.place(relx=0.33, rely=0.025)
-        self.input =  ctk.CTkEntry(master=self.root,
-                                   placeholder_text=100,
-                                   justify='center',
-                                   width=300,
-                                   height=50,
-                                   fg_color="darkblue")
-        self.input.insert(0,100)
-        self.input.place(relx=0.025,rely=0.5)
-        self.slider = ctk.CTkSlider(master=self.root,
-                                    width=300,
-                                    height=20,
-                                    from_=1,
-                                    to=1000,
-                                    number_of_steps=999,
-                                    command=self.update_surface)
-        self.slider.place(relx= 0.025,rely=0.75) 
-        self.button = ctk.CTkButton(master = self.root,
-                               text="Update Graph",
-                               width=300,
-                               height=50,
-                               command=self.update_window)
-        self.button.place(relx=0.025,rely=0.25)
-        
-        sns.set_theme(style="darkgrid", palette='tab10', rc={'figure.figsize':(15,6)})
-        file_path = "nmos-idw-gmid.csv"
-        global data
-        data = pd.read_csv(file_path)
-        global X_data
-        global Y_data
-        X_data = [title for title in data.columns if 'X' in title]
-        Y_data = [title for title in data.columns if 'Y' in title]
-        
-        self.root.mainloop()
-    
-    def update_window(self):
-        fig, ax = plt.subplots()
-        fig.set_size_inches(11,5.3)
-        sns.lineplot(x=X_data[0], y=Y_data[0], data=data, ax=ax)
-        fig.subplots_adjust(left=0, right=1, bottom=0, top=1, wspace=0, hspace=0)
-        canvas = FigureCanvasTkAgg(fig,master=self.root)
-        canvas.draw()
-        canvas.get_tk_widget().place(relx=0.33, rely=0.025)
-        self.root.update()
-        
-    def update_surface(self,other):
-        fig, ax = plt.subplots()
-        fig.set_size_inches(11,5.3)
-        sns.lineplot(x=X_data[0], y=Y_data[0], data=data, ax=ax)
-        fig.subplots_adjust(left=0, right=1, bottom=0, top=1, wspace=0, hspace=0)
-        canvas = FigureCanvasTkAgg(fig,master=self.root)
-        canvas.draw()
-        canvas.get_tk_widget().place(relx=0.33, rely=0.025)
-        self.root.update()
+root = customtkinter.CTk()
+root.title("analog-py-designer")
 
-if __name__ == "__main__":        
-    CTK_Window = ctkApp()
+fig = Figure(figsize=(5, 4), dpi=100)
+t = np.arange(0, 3, .01)
+fig.add_subplot(111).plot(t, 2 * np.sin(2 * np.pi * t))
+
+canvas = FigureCanvasTkAgg(fig, master=root)  # A tk.DrawingArea.
+canvas.draw()
+canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
+
+toolbar = NavigationToolbar2Tk(canvas, root)
+toolbar.update()
+canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
+
+
+def on_key_press(event):
+    print("you pressed {}".format(event.key))
+    key_press_handler(event, canvas, toolbar)
+
+
+canvas.mpl_connect("key_press_event", on_key_press)
+
+
+def _quit():
+    root.quit()     # stops mainloop
+    root.destroy()  # this is necessary on Windows to prevent
+                    # Fatal Python Error: PyEval_RestoreThread: NULL tstate
+
+
+button = customtkinter.CTkButton(master=root, text="Quit", command=_quit)
+button.pack(side=tkinter.BOTTOM)
+
+root.mainloop()
+# If you put root.destroy() here, it will cause an error if the window is
+# closed with the window manager.
