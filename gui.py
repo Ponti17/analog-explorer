@@ -41,8 +41,10 @@ class ctkApp:
         
         self.freq = 1
         
-        self.plota_x = "gm/id"
-        self.plota_y = "gm"
+        
+        self.active_plot = "plot (a)"
+        self.xaxis = "gm/id"
+        self.yaxis = "gm"
                 
         # ----------- PLOT DROPDOWN ------------
 
@@ -53,7 +55,7 @@ class ctkApp:
 
         self.xaxis_dropdown = ctk.CTkComboBox(master=self.root,
                                    values=["plot (a)", "plot (b)", "plot (c)", "plot (d)"],
-                                   command=self.dropdown_callback)
+                                   command=self.set_active_plot)
         self.xaxis_dropdown.place(relx=0.9,rely=0.13)
         self.xaxis_dropdown.set("plot (a)")
 
@@ -71,13 +73,13 @@ class ctkApp:
 
         self.xaxis_dropdown = ctk.CTkComboBox(master=self.root,
                                    values=["gm/id", "gm", "vgs"],
-                                   command=self.dropdown_callback)
+                                   command=self.set_xaxis)
         self.xaxis_dropdown.place(relx=0.9,rely=0.18)
         self.xaxis_dropdown.set("gm/id")
 
         self.yaxis_dropdown = ctk.CTkComboBox(master=self.root,
                             values=["gm/id", "gm", "vgs"],
-                            command=self.dropdown_callback)
+                            command=self.set_yaxis)
         self.yaxis_dropdown.place(relx=0.9,rely=0.23)
         self.yaxis_dropdown.set("gm/id")
         
@@ -123,14 +125,24 @@ class ctkApp:
         
         self.root.mainloop()
         
+    def set_active_plot(self, value):
+        self.active_plot = value
+        print(self.active_plot)
+        
+    def set_xaxis(self, value):
+        self.xaxis = value
+        print(self.xaxis)
+    
+    def set_yaxis(self, value):
+        self.yaxis = value
+        print(self.yaxis)
+        
     def submit(self):
         self.freq = self.my_entry.get()
         self.update_plot()
-        
-    def dropdown_callback(self, value):
-        print(value)
 
     def update_plot(self):
+        print(self.active_plot)
         t = np.arange(0, 3, .01)
         fig, axs = plt.subplots(2, 2) # four subplots in a 2x2 grid
         fig.set_size_inches(10, 5)
