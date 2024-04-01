@@ -1,4 +1,4 @@
-import tkinter
+import pandas as pd
 import customtkinter as ctk
 
 import matplotlib.pyplot as plt
@@ -45,6 +45,8 @@ class ctkApp:
         self.active_plot = "plot (a)"
         self.xaxis = "gm/id"
         self.yaxis = "gm"
+        self.vds = 1
+        self.L = 1
                 
         # ----------- PLOT DROPDOWN ------------
 
@@ -90,7 +92,7 @@ class ctkApp:
         self.L_text.insert("0.0", "L (u):")
         self.L_text.configure(state="disabled") # READONLY after insert
 
-        self.my_entry = ctk.CTkEntry(self.root, 
+        self.L_entry = ctk.CTkEntry(self.root, 
             placeholder_text="",
             height=30,
             width=130,
@@ -100,7 +102,7 @@ class ctkApp:
             fg_color=("darkblue","white"),  # outer, inner
             state="normal",
         )
-        self.my_entry.place(relx=0.9,rely=0.28)
+        self.L_entry.place(relx=0.9,rely=0.28)
         
         # ----------- VDS ENTRY FIELD ------------
         
@@ -138,17 +140,35 @@ class ctkApp:
         print(self.yaxis)
         
     def submit(self):
-        self.freq = self.my_entry.get()
+        self.vds = self.my_entry.get()
         self.update_plot()
 
     def update_plot(self):
+        self.vds = self.my_entry.get()
+        self.L = self.L_entry.get()
+        
+        if float(self.L) < 1:
+            L_factor = "e-07"
+            self.L = str(int(float(self.L) * 10))
+        else:
+            L_factor = "e-06"
+            
+        print("L_sweep={0}{1}".format(self.L, L_factor))
+        
+        print(self.vds)
+        data_path = "nmos-gmid-idw-vds-test.csv"
+        data = pd.read_csv(data_path)
+        
+        X_data = [title for title in data.columns if 'X' in title and "VDS={}".format(self.vds) in title and "L_sweep={0}{1}".format(self.L, L_factor) in title]
+        Y_data = [title for title in data.columns if 'Y' in title and "VDS={}".format(self.vds) in title and "L_sweep={0}{1}".format(self.L, L_factor) in title]
+        
         print(self.active_plot)
         t = np.arange(0, 3, .01)
         fig, axs = plt.subplots(2, 2) # four subplots in a 2x2 grid
         fig.set_size_inches(10, 5)
         fig.tight_layout(pad=2.5)
     
-        axs[0, 0].plot(t, 2 * np.sin(2 * np.pi * t * int(self.freq)), 'tab:orange')
+        axs[0, 0].plot(data[X_data], data[Y_data], 'tab:orange')
         axs[0, 0].set_title("Plot (a)")
         axs[0, 1].plot(t, 2 * np.sin(2 * np.pi * t * int(self.freq)), 'tab:green')
         axs[0, 1].set_title("Plot (b)")
