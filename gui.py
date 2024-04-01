@@ -15,7 +15,7 @@ class ctkApp:
         # ctk setup
         ctk.set_appearance_mode("dark")
         self.root = ctk.CTk()
-        self.root.geometry("1200x800")
+        self.root.geometry("1600x800")
         self.root.title("analog-py-designer")
 
         self.frame = ctk.CTkFrame(master=self.root,
@@ -27,39 +27,98 @@ class ctkApp:
         
         self.button = ctk.CTkButton(master=self.root,
                                     text="Plot",
-                                    width=300,
+                                    width=100,
                                     height=50,
                                     command=self.update_plot)
-        self.button.place(relx=0.025,rely=0.25)
+        self.button.place(relx=0.9,rely=0.4)
         
         self.quit_button = ctk.CTkButton(master=self.root,
                                     text="Quit",
-                                    width=300,
+                                    width=100,
                                     height=50,
                                     command=self.quit)
-        self.quit_button.place(relx=0.025,rely=0.5)
+        self.quit_button.place(relx=0.9,rely=0.5)
         
         self.freq = 1
         
-        # ----------- ENTRY FIELD ------------
-        my_label = ctk.CTkLabel(self.root, text="", font=("Helvetica", 24))
-        my_label.pack(pady=300)
+        self.plota_x = "gm/id"
+        self.plota_y = "gm"
+                
+        # ----------- PLOT DROPDOWN ------------
+
+        self.axis_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
+        self.axis_text.place(relx=0.85, rely=0.125)
+        self.axis_text.insert("0.0", "Plot:")
+        self.axis_text.configure(state="disabled") # READONLY after insert
+
+        self.xaxis_dropdown = ctk.CTkComboBox(master=self.root,
+                                   values=["plot (a)", "plot (b)", "plot (c)", "plot (d)"],
+                                   command=self.dropdown_callback)
+        self.xaxis_dropdown.place(relx=0.9,rely=0.13)
+        self.xaxis_dropdown.set("plot (a)")
+
+        # ----------- X/Y AXIS DROPDOWN ------------
+        
+        self.axis_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
+        self.axis_text.place(relx=0.85, rely=0.175)
+        self.axis_text.insert("0.0", "X-axis")
+        self.axis_text.configure(state="disabled") # READONLY after insert
+
+        self.axis_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
+        self.axis_text.place(relx=0.85, rely=0.225)
+        self.axis_text.insert("0.0", "Y-axis")
+        self.axis_text.configure(state="disabled") # READONLY after insert
+
+        self.xaxis_dropdown = ctk.CTkComboBox(master=self.root,
+                                   values=["gm/id", "gm", "vgs"],
+                                   command=self.dropdown_callback)
+        self.xaxis_dropdown.place(relx=0.9,rely=0.18)
+        self.xaxis_dropdown.set("gm/id")
+
+        self.yaxis_dropdown = ctk.CTkComboBox(master=self.root,
+                            values=["gm/id", "gm", "vgs"],
+                            command=self.dropdown_callback)
+        self.yaxis_dropdown.place(relx=0.9,rely=0.23)
+        self.yaxis_dropdown.set("gm/id")
+        
+        # ----------- L ENTRY FIELD ------------
+
+        self.L_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
+        self.L_text.place(relx=0.85, rely=0.275)
+        self.L_text.insert("0.0", "L (u):")
+        self.L_text.configure(state="disabled") # READONLY after insert
 
         self.my_entry = ctk.CTkEntry(self.root, 
             placeholder_text="",
-            height=50,
-            width=50,
-            font=("Helvetica", 18),
+            height=30,
+            width=130,
+            font=("Helvetica", 12),
             corner_radius=10,
             text_color="black",
             fg_color=("darkblue","white"),  # outer, inner
             state="normal",
         )
-        self.my_entry.pack(pady=20)
+        self.my_entry.place(relx=0.9,rely=0.28)
         
-        my_button = ctk.CTkButton(self.root, text="Submit", command=self.submit)
-        my_button.pack(pady=10)
+        # ----------- VDS ENTRY FIELD ------------
         
+        self.L_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
+        self.L_text.place(relx=0.85, rely=0.325)
+        self.L_text.insert("0.0", "VDS:")
+        self.L_text.configure(state="disabled") # READONLY after insert
+
+        self.my_entry = ctk.CTkEntry(self.root, 
+            placeholder_text="",
+            height=30,
+            width=130,
+            font=("Helvetica", 12),
+            corner_radius=10,
+            text_color="black",
+            fg_color=("darkblue","white"),  # outer, inner
+            state="normal",
+        )
+        self.my_entry.place(relx=0.9,rely=0.33)
+
         # ----------- START ------------
         
         self.root.mainloop()
@@ -68,6 +127,8 @@ class ctkApp:
         self.freq = self.my_entry.get()
         self.update_plot()
         
+    def dropdown_callback(self, value):
+        print(value)
 
     def update_plot(self):
         t = np.arange(0, 3, .01)
@@ -87,7 +148,7 @@ class ctkApp:
         # fig.subplots_adjust(left=0, right=1, bottom=0, top=1, wspace=0, hspace=0)
         canvas = FigureCanvasTkAgg(fig,master=self.root)
         canvas.draw()
-        canvas.get_tk_widget().place(relx=0.33, rely=0.025)
+        canvas.get_tk_widget().place(relx=0, rely=0.025)
         self.root.update()
 
     def quit(self):
