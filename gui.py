@@ -46,11 +46,11 @@ class ctkApp:
         self.freq = 1 #tmp
         
         self.active_plot = "plot (a)"
-        self.xaxis = "gm/id"
-        self.yaxis = "gm"
-        self.vds = 1
-        self.L = 1
-        self.log_scale = "off"
+        self.xaxis      = {"a": "gm/id", "b": "gm/id", "c": "gm/id", "d": "gm/id"}
+        self.yaxis      = {"a": "gm", "b": "gm", "c": "gm", "d": "gm"}
+        self.vds        = {"a": "1", "b": "1", "c": "1", "d": "1"}
+        self.L          = {"a": "1", "b": "1", "c": "1", "d": "1"}
+        self.log_scale  = {"a": "off", "b": "off", "c": "off", "d": "off"}
         
         self.plot_data = {
             "a_x": "1",
@@ -71,10 +71,10 @@ class ctkApp:
         self.axis_text.configure(state="disabled") # READONLY after insert
 
         self.xaxis_dropdown = ctk.CTkComboBox(master=self.root,
-                                   values=["plot (a)", "plot (b)", "plot (c)", "plot (d)"],
+                                   values=["a", "b", "c", "d"],
                                    command=self.set_active_plot)
         self.xaxis_dropdown.place(relx=0.9,rely=0.13)
-        self.xaxis_dropdown.set("plot (a)")
+        self.xaxis_dropdown.set("a")
 
         # ----------- X/Y AXIS DROPDOWN ------------
         
@@ -121,12 +121,12 @@ class ctkApp:
         
         # ----------- VDS ENTRY FIELD ------------
         
-        self.L_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
-        self.L_text.place(relx=0.85, rely=0.325)
-        self.L_text.insert("0.0", "VDS:")
-        self.L_text.configure(state="disabled") # READONLY after insert
+        self.vds_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
+        self.vds_text.place(relx=0.85, rely=0.325)
+        self.vds_text.insert("0.0", "VDS:")
+        self.vds_text.configure(state="disabled") # READONLY after insert
 
-        self.my_entry = ctk.CTkEntry(self.root, 
+        self.vds_entry = ctk.CTkEntry(self.root, 
             placeholder_text="",
             height=30,
             width=130,
@@ -136,17 +136,57 @@ class ctkApp:
             fg_color=("darkblue","white"),  # outer, inner
             state="normal",
         )
-        self.my_entry.place(relx=0.9,rely=0.33)
+        self.vds_entry.place(relx=0.9,rely=0.33)
         
         # ----------- LOG CHECKBOX ------------
         
         self.log_scale_checkbox = ctk.CTkCheckBox(master=self.root, text="Log Scale", command=self.set_log_scale, onvalue="on", offvalue="off")
         self.log_scale_checkbox.place(relx=0.9, rely=0.375)
+        
+        # ----------- PLOT READOUT ------------
+        
+        self.axis_entry = ctk.CTkEntry(self.root, 
+            placeholder_text="",
+            height=30,
+            width=130,
+            font=("Helvetica", 12),
+            corner_radius=10,
+            text_color="black",
+            fg_color=("darkblue","white"),  # outer, inner
+            state="normal",
+        )
+        self.axis_entry.place(relx=0.025,rely=0.70)
+        
+        self.readout_button = ctk.CTkButton(master=self.root,
+                            text="Readout",
+                            width=100,
+                            height=50,
+                            command=self.readout)
+        self.readout_button.place(relx=0.025,rely=0.80)
+        
+        self.axis_readout = ctk.CTkTextbox(master=self.root, width=130, height=10, corner_radius=10)
+        self.axis_readout.place(relx=0.025, rely=0.75)
+        self.axis_readout.insert("0.0", "")
+        self.axis_readout.configure(state="disabled") # READONLY after insert
 
         # ----------- START ------------
         self.init_plot()
         self.root.mainloop()
-    
+        
+    def readout(self):
+        plot_key = "a_x"  # Extracting the key from title
+        X_data = self.plot_data.get(plot_key)  # Fetching X_data from dictionary
+        entry_value = float(self.axis_entry.get())
+        
+        for key, value in X_data.items():
+            print(key)
+        
+        # closest_value = min(X_data, key=lambda x: abs(x - entry_value))
+        
+        self.axis_readout.configure(state="normal")
+        self.axis_readout.insert("0.0", "testtest")
+        self.axis_readout.configure(state="disabled") # READONLY after insert
+
     def init_plot(self):
         t = np.arange(0, 3, .01)
         fig, axs = plt.subplots(2, 2) # four subplots in a 2x2 grid
@@ -172,6 +212,7 @@ class ctkApp:
     
     def set_active_plot(self, value):
         self.active_plot = value
+        self.vds_text.insert("0.0", "VDS: {0}".format(self.vds[value]))
         print(self.active_plot)
         
     def set_xaxis(self, value):
@@ -181,19 +222,15 @@ class ctkApp:
     def set_yaxis(self, value):
         self.yaxis = value
         print(self.yaxis)
-        
-    def submit(self):
-        self.vds = self.my_entry.get()
-        self.update_plot()
 
     def update_plot(self):
-        self.vds = self.my_entry.get()
-        self.L = self.L_entry.get()
+        self.vds[self.active_plot] = self.vds_entry.get()
+        self.L[self.active_plot] = self.L_entry.get()
         
         # fix the factor for L if less than 1u
-        if float(self.L) < 1:
+        if float(self.L[self.active_plot]) < 1:
             L_factor = "e-07"
-            self.L = str(int(float(self.L) * 10))
+            self.L = str(int(float(self.L[self.active_plot]) * 10))
         else:
             L_factor = "e-06"
         
@@ -217,7 +254,7 @@ class ctkApp:
         data_path = "nmos-gmid-idw-vds-test.csv"
         data = pd.read_csv(data_path)
         
-        X_data = [title for title in data.columns if 'X' in title and "VDS={}".format(self.vds) in title and "L_sweep={0}{1}".format(self.L, L_factor) in title]
+        X_data = [title for title in data.columns if 'X' in title and "VDS={})".format(self.vds) in title and "L_sweep={0}{1}".format(self.L, L_factor) in title]
         Y_data = [title for title in data.columns if 'Y' in title and "VDS={}".format(self.vds) in title and "L_sweep={0}{1}".format(self.L, L_factor) in title]
         
         if self.active_plot == "plot (a)":
