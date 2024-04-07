@@ -242,6 +242,11 @@ class ctkApp:
                     x = self.model[x_title]
                     y = self.model[y_title]
                     axs[i, j].plot(x, y)
+                    axs[i, j].set_xlabel(self.xaxis[self.active_plot], loc="left")
+                    axs[i, j].set_ylabel(self.yaxis[self.active_plot])
+                axs[i, j].set_title("Plot ({})".format(self.plots[plot]), y=0.98)
+                axs[i, j].grid()
+                axs[i, j].ticklabel_format(axis='both', style='sci', scilimits=(0,0))
                 plot += 1
         
         # ----------- UPDATE CANVAS ------------
