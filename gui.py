@@ -63,7 +63,7 @@ class ctkApp:
                             "c": "",
                             "d": ""}
         self.models = ["nch"]
-        self.axis_variables = ["gmoverid", "gm", "vgs"]
+        self.axis_variables = ["gmoverid", "gm", "vgs", "cgg", "1/gds"]
         self.plots = ["a", "b", "c", "d"]
         
         # user inputs
@@ -132,7 +132,7 @@ class ctkApp:
                             values=self.axis_variables,
                             command=self.set_yaxis)
         self.yaxis_dropdown.place(relx=0.9,rely=0.23)
-        self.yaxis_dropdown.set("gm/id")
+        self.yaxis_dropdown.set("gmoverid")
         
         # ----------- L ENTRY FIELD ------------
 
@@ -241,12 +241,18 @@ class ctkApp:
                 if x_title in self.model and y_title in self.model:
                     x = self.model[x_title]
                     y = self.model[y_title]
+                    
+                    if self.log_scale[self.plots[plot]] == "on":
+                        axs[i, j].set_xscale("log")
+                        axs[i, j].ticklabel_format(axis='y', style='sci', scilimits=(0,0))
+                    else:
+                        axs[i, j].ticklabel_format(axis='both', style='sci', scilimits=(0,0))
+                    
                     axs[i, j].plot(x, y)
                     axs[i, j].set_xlabel(self.xaxis[self.active_plot], loc="left")
                     axs[i, j].set_ylabel(self.yaxis[self.active_plot])
                 axs[i, j].set_title("Plot ({})".format(self.plots[plot]), y=0.98)
                 axs[i, j].grid()
-                axs[i, j].ticklabel_format(axis='both', style='sci', scilimits=(0,0))
                 plot += 1
         
         # ----------- UPDATE CANVAS ------------
