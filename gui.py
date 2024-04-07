@@ -224,14 +224,16 @@ class ctkApp:
         
         # define params to find in model
         search_params = [self.vds[self.active_plot], self.L[self.active_plot], self.yaxis[self.active_plot]]
-        data = [title for title in self.model.columns if all(param in title for param in search_params)]
+        y_data = [title for title in self.model.columns if all(param in title for param in search_params)]
+        search_params = [self.vds[self.active_plot], self.L[self.active_plot], self.xaxis[self.active_plot]]
+        x_data = [title for title in self.model.columns if all(param in title for param in search_params)]
         
-        if data == []:
+        if y_data == [] or x_data == []:
             print("No data found")
             return
         
-        self.xaxis_title[self.active_plot] = data[0]
-        self.yaxis_title[self.active_plot] = data[1]
+        self.xaxis_title[self.active_plot] = x_data[1]
+        self.yaxis_title[self.active_plot] = y_data[1]
 
         plot = 0
         for i in range(plot_rows):
