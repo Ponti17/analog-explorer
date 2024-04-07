@@ -46,16 +46,16 @@ class ctkApp:
         # ----------- VARIABLES ------------
         
         self.active_plot = "a"
-        self.yaxis      = {"a": "gm/id",
-                           "b": "gm/id",
-                           "c": "gm/id",
-                           "d": "gm/id"}
+        self.yaxis      = {"a": "gmoverid",
+                           "b": "gmoverid",
+                           "c": "gmoverid",
+                           "d": "gmoverid"}
         self.xaxis      = {"a": "vgs",
                            "b": "vgs",
                            "c": "vgs",
                            "d": "vgs"}
         self.models = ["nch"]
-        self.axis_variables = ["gm/id", "gm", "vgs"]
+        self.axis_variables = ["gmoverid", "gm", "vgs"]
         self.plots = ["a", "b", "c", "d"]
         
         # user inputs
@@ -170,6 +170,7 @@ class ctkApp:
         self.log_scale_checkbox.place(relx=0.9, rely=0.375)
 
         # ----------- START ------------
+        self.load_model()
         self.root.mainloop()
         
     def set_active_model(self, value):
@@ -187,20 +188,36 @@ class ctkApp:
     def set_yaxis(self, value):
         self.yaxis[self.active_plot] = value
         print(self.yaxis)
+        
+    def load_model(self):
+        filename = "nch_full_sim.csv"
+        self.model = pd.read_csv(filename)
 
     def update_plot(self):
-        self.vds[self.active_plot] = self.vds_entry.get()
-        self.L[self.active_plot] = self.L_entry.get()
+        # fetch user inputs
+        self.vds[self.active_plot] = "{:.2e}".format(float(self.vds_entry.get())) # convert to scientific notation
+        self.L[self.active_plot] = "{:.2e}".format(float(self.L_entry.get()))
         self.log_scale[self.active_plot] = self.log_scale_checkbox.get()
+        
+        # ----------- PLOT ------------
+        
+        fig, axs = plt.subplots(2, 2) # four subplots in a 2x2 grid
+        fig.set_size_inches(10, 5)
+        fig.tight_layout(pad=2.5)
+        
+        # define params to find in model
+        search_params = [self.vds[self.active_plot], self.L[self.active_plot], self.yaxis[self.active_plot]]
+        data = [title for title in self.model.columns if all(param in title for param in search_params)]
+        
+        if data == []:
+            print("No data found")
+
+        axs[0, 0].plot(self.model[data[0]], self.model[data[1]])
         
         # ----------- UPDATE CANVAS ------------
         
         for ele in vars(self):
             print(ele, getattr(self, ele))
-        
-        fig, axs = plt.subplots(2, 2) # four subplots in a 2x2 grid
-        fig.set_size_inches(10, 5)
-        fig.tight_layout(pad=2.5)
         
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
