@@ -63,7 +63,7 @@ class ctkApp:
                             "c": "",
                             "d": ""}
         self.models = ["nch"]
-        self.axis_variables = ["gmoverid", "gm", "vgs", "cgg", "1/gds"]
+        self.axis_variables = ["gmoverid", "gm", "vgs", "cgg", "gds"]
         self.plots = ["a", "b", "c", "d"]
         
         # user inputs
@@ -200,6 +200,14 @@ class ctkApp:
     def load_model(self):
         filename = "nch_full_sim.csv"
         self.model = pd.read_csv(filename)
+        
+    def plot_gmro(self):
+        search_params = [self.vds[self.active_plot], self.L[self.active_plot]]
+        data = []
+        data.append([title for title in self.model.columns if all(param in title for param in search_params) and "gm " in title])
+        data.append([title for title in self.model.columns if all(param in title for param in search_params) and "gds" in title])
+        gmro = self.model[data[0][1]] / self.model[data[1][1]]
+        return gmro
 
     def update_plot(self):
         # fetch user inputs
