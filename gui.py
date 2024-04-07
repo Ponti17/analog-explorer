@@ -71,10 +71,10 @@ class ctkApp:
                            "b": "1",
                            "c": "1",
                            "d": "1"}
-        self.log_scale  = {"a": 0,
-                           "b": 0,
-                           "c": 0,
-                           "d": 0}
+        self.log_scale  = {"a": "off",
+                           "b": "off",
+                           "c": "off",
+                           "d": "off"}
                 
         # ----------- ACTIVE PLOT DROPDOWN ------------
 
@@ -193,6 +193,10 @@ class ctkApp:
         print(self.yaxis)
 
     def update_plot(self):
+        self.vds[self.active_plot] = self.vds_entry.get()
+        self.L[self.active_plot] = self.L_entry.get()
+        self.log_scale[self.active_plot] = self.log_scale_checkbox.get()
+        
         # ----------- UPDATE CANVAS ------------
         
         for ele in vars(self):
