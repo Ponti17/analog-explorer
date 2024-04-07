@@ -54,17 +54,17 @@ class ctkApp:
                            "b": "vgs",
                            "c": "vgs",
                            "d": "vgs"}
+        self.xaxis_title = {"a": "",
+                            "b": "",
+                            "c": "",
+                            "d": ""}
+        self.yaxis_title = {"a": "",
+                            "b": "",
+                            "c": "",
+                            "d": ""}
         self.models = ["nch"]
         self.axis_variables = ["gmoverid", "gm", "vgs"]
         self.plots = ["a", "b", "c", "d"]
-        self.xaxis_data = {"a": None,
-                           "b": None,
-                           "c": None,
-                           "d": None}
-        self.yaxis_data = {"a": None,
-                           "b": None,
-                           "c": None,
-                           "d": None}
         
         # user inputs
         self.model      = {"a": "nch",
@@ -207,8 +207,8 @@ class ctkApp:
         self.L[self.active_plot] = "{:.2e}".format(float(self.L_entry.get()) * 1e-6)
         self.log_scale[self.active_plot] = self.log_scale_checkbox.get()
         
-        for ele in vars(self):
-            print(ele, getattr(self, ele))
+        # for ele in vars(self):
+            # print(ele, getattr(self, ele))
         
         # ----------- PLOT ------------
         
@@ -229,18 +229,20 @@ class ctkApp:
         if data == []:
             print("No data found")
             return
-            
-        # save data
-        self.xaxis_data[self.active_plot] = data[0]
-        self.yaxis_data[self.active_plot] = data[1]
+        
+        self.xaxis_title[self.active_plot] = data[0]
+        self.yaxis_title[self.active_plot] = data[1]
 
+        plot = 0
         for i in range(plot_rows):
             for j in range(plot_columns):
-                # x = self.xaxis_data[self.plots[i+j]]
-                # y = self.yaxis_data[self.plots[i+j]]
-                axs[i, j].plot(self.model[data[0]], self.model[data[1]])
-
-        # axs[0, 0].plot(self.model[data[0]], self.model[data[1]])
+                x_title = self.xaxis_title[self.plots[plot]]
+                y_title = self.yaxis_title[self.plots[plot]]
+                if x_title in self.model and y_title in self.model:
+                    x = self.model[x_title]
+                    y = self.model[y_title]
+                    axs[i, j].plot(x, y)
+                plot += 1
         
         # ----------- UPDATE CANVAS ------------
         
