@@ -185,18 +185,18 @@ class ctkApp:
         print(self.active_plot)
         
     def set_xaxis(self, value):
-        self.xaxis = value
+        self.xaxis[self.active_plot] = value
         print(self.xaxis)
     
     def set_yaxis(self, value):
-        self.yaxis = value
+        self.yaxis[self.active_plot] = value
         print(self.yaxis)
 
     def update_plot(self):
-        self.vds[self.active_plot] = self.vds_entry.get()
-        self.L[self.active_plot] = self.L_entry.get()
-        
         # ----------- UPDATE CANVAS ------------
+        
+        for ele in vars(self):
+            print(ele, getattr(self, ele))
         
         fig, axs = plt.subplots(2, 2) # four subplots in a 2x2 grid
         fig.set_size_inches(10, 5)
