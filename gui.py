@@ -198,9 +198,15 @@ class ctkApp:
         
         # ----------- UPDATE CANVAS ------------
         
+        fig, axs = plt.subplots(2, 2) # four subplots in a 2x2 grid
+        fig.set_size_inches(10, 5)
+        fig.tight_layout(pad=2.5)
+        
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
-        canvas.get_tk_widget().place(relx=0, rely=0.025)
+
+        # figures have fixed size so they are equal when saved
+        canvas.get_tk_widget().place(relx=0.025, rely=0.025)
         self.root.update()
 
     def quit(self):
