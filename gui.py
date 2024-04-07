@@ -57,6 +57,14 @@ class ctkApp:
         self.models = ["nch"]
         self.axis_variables = ["gmoverid", "gm", "vgs"]
         self.plots = ["a", "b", "c", "d"]
+        self.xaxis_data = {"a": None,
+                           "b": None,
+                           "c": None,
+                           "d": None}
+        self.yaxis_data = {"a": None,
+                           "b": None,
+                           "c": None,
+                           "d": None}
         
         # user inputs
         self.model      = {"a": "nch",
@@ -196,12 +204,21 @@ class ctkApp:
     def update_plot(self):
         # fetch user inputs
         self.vds[self.active_plot] = "{:.2e}".format(float(self.vds_entry.get())) # convert to scientific notation
-        self.L[self.active_plot] = "{:.2e}".format(float(self.L_entry.get()))
+        self.L[self.active_plot] = "{:.2e}".format(float(self.L_entry.get()) * 1e-6)
         self.log_scale[self.active_plot] = self.log_scale_checkbox.get()
+        
+        for ele in vars(self):
+            print(ele, getattr(self, ele))
         
         # ----------- PLOT ------------
         
-        fig, axs = plt.subplots(2, 2) # four subplots in a 2x2 grid
+        plot_columns = plot_rows = 2
+
+        if plot_columns > 2 or plot_rows > 2:
+            print("Too many plots")
+            return
+
+        fig, axs = plt.subplots(plot_rows, plot_columns) # four subplots in a 2x2 grid
         fig.set_size_inches(10, 5)
         fig.tight_layout(pad=2.5)
         
@@ -211,13 +228,21 @@ class ctkApp:
         
         if data == []:
             print("No data found")
+            return
+            
+        # save data
+        self.xaxis_data[self.active_plot] = data[0]
+        self.yaxis_data[self.active_plot] = data[1]
 
-        axs[0, 0].plot(self.model[data[0]], self.model[data[1]])
+        for i in range(plot_rows):
+            for j in range(plot_columns):
+                # x = self.xaxis_data[self.plots[i+j]]
+                # y = self.yaxis_data[self.plots[i+j]]
+                axs[i, j].plot(self.model[data[0]], self.model[data[1]])
+
+        # axs[0, 0].plot(self.model[data[0]], self.model[data[1]])
         
         # ----------- UPDATE CANVAS ------------
-        
-        for ele in vars(self):
-            print(ele, getattr(self, ele))
         
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
@@ -230,5 +255,5 @@ class ctkApp:
         self.root.quit()
         self.root.destroy()
 
-if __name__ == "__main__":        
+if __name__ == "__main__":       
     CTK_Window = ctkApp()
