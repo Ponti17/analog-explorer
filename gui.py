@@ -166,15 +166,11 @@ class ctkApp:
         
         # ----------- LOG CHECKBOX ------------
         
-        self.log_scale_checkbox = ctk.CTkCheckBox(master=self.root, text="Log Scale", command=self.set_log_scale, onvalue="on", offvalue="off")
+        self.log_scale_checkbox = ctk.CTkCheckBox(master=self.root, text="Log Scale", onvalue="on", offvalue="off")
         self.log_scale_checkbox.place(relx=0.9, rely=0.375)
 
         # ----------- START ------------
         self.root.mainloop()
-    
-    def set_log_scale(self):
-        self.log_scale = self.log_scale_checkbox.get()
-        print(self.log_scale)
         
     def set_active_model(self, value):
         self.active_model = value
