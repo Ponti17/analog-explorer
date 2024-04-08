@@ -46,14 +46,14 @@ class ctkApp:
         # ----------- VARIABLES ------------
         
         self.active_plot = "a"
-        self.yaxis      = {"a": "gmoverid",
-                           "b": "gmoverid",
-                           "c": "gmoverid",
-                           "d": "gmoverid"}
-        self.xaxis      = {"a": "vgs",
-                           "b": "vgs",
-                           "c": "vgs",
-                           "d": "vgs"}
+        self.yaxis      = {"a": "",
+                           "b": "",
+                           "c": "",
+                           "d": ""}
+        self.xaxis      = {"a": "",
+                           "b": "",
+                           "c": "",
+                           "d": ""}
         self.xaxis_title = {"a": "",
                             "b": "",
                             "c": "",
@@ -63,7 +63,7 @@ class ctkApp:
                             "c": "",
                             "d": ""}
         self.models = ["nch"]
-        self.axis_variables = ["gmoverid", "gm", "vgs", "cgg", "gds"]
+        self.axis_variables = ["gmoverid", "gm", "vgs", "cgg", "gds", "gmro"]
         self.plots = ["a", "b", "c", "d"]
         
         # user inputs
@@ -221,6 +221,10 @@ class ctkApp:
         self.L[self.active_plot] = "{:.2e}".format(float(self.L_entry.get()) * 1e-6)
         self.log_scale[self.active_plot] = self.log_scale_checkbox.get()
         
+        # fetch from dropdowns
+        self.xaxis[self.active_plot] = self.xaxis_dropdown.get()
+        self.yaxis[self.active_plot] = self.yaxis_dropdown.get()
+        
         # for ele in vars(self):
             # print(ele, getattr(self, ele))
         
@@ -243,13 +247,13 @@ class ctkApp:
                 # fetch x data
                 if self.xaxis[self.plots[plot]] == "gmro":
                     x = self.plot_gmro()
-                else:
+                elif self.xaxis[self.plots[plot]] != "":
                     x = self.plot_simple(self.xaxis[self.plots[plot]])
                     
                 # fetch y data
                 if self.yaxis[self.plots[plot]] == "gmro":
                     y = self.plot_gmro()
-                else:
+                elif self.yaxis[self.plots[plot]] != "":
                     y = self.plot_simple(self.yaxis[self.plots[plot]])
                 
                 # check if log scale is enabled
@@ -260,9 +264,10 @@ class ctkApp:
                     axs[i, j].ticklabel_format(axis='both', style='sci', scilimits=(0,0))
                 
                 # plot
-                axs[i, j].plot(x, y)
-                axs[i, j].set_xlabel(self.xaxis[self.plots[plot]], loc="left")
-                axs[i, j].set_ylabel(self.yaxis[self.plots[plot]])
+                if self.xaxis[self.plots[plot]] != "" and self.yaxis[self.plots[plot]] != "":
+                    axs[i, j].plot(x, y)
+                    axs[i, j].set_xlabel(self.xaxis[self.plots[plot]], loc="left")
+                    axs[i, j].set_ylabel(self.yaxis[self.plots[plot]])
                 axs[i, j].set_title("Plot ({})".format(self.plots[plot]), y=0.98)
                 axs[i, j].grid()
                 plot += 1
