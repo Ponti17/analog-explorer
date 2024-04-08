@@ -180,6 +180,11 @@ class ctkApp:
         
         self.log_scale_checkbox = ctk.CTkCheckBox(master=self.root, text="Log Scale", onvalue="on", offvalue="off")
         self.log_scale_checkbox.place(relx=0.9, rely=0.375)
+        
+        # ----------- SINGLE PLOT CHECKBOX ------------
+        
+        self.single_plot_checkbox = ctk.CTkCheckBox(master=self.root, text="Single Plot", onvalue="on", offvalue="off")
+        self.single_plot_checkbox.place(relx=0.9, rely=0.425)
 
         # ----------- START ------------
         self.load_model()
@@ -218,14 +223,76 @@ class ctkApp:
         data = [title for title in self.model.columns if all(param in title for param in search_params)]
         retval = self.model[data[1]]
         return retval
+    
+    def single_plot(self):
+        # process lengths
+        self.L[self.active_plot] = self.L_entry.get()
+        if ':' in self.L[self.active_plot]:
+            self.L[self.active_plot] = self.L[self.active_plot].split(":")
+        else:
+            self.L[self.active_plot] = [self.L[self.active_plot]]
+        
+        self.vds[self.active_plot] = "{:.2e}".format(float(self.vds_entry.get())) # convert to scientific notation
+        self.log_scale[self.active_plot] = self.log_scale_checkbox.get()
+        
+        # fetch from dropdowns
+        self.xaxis[self.active_plot] = self.xaxis_dropdown.get()
+        self.yaxis[self.active_plot] = self.yaxis_dropdown.get()
+        
+        fig, ax = plt.subplots() # four subplots in a 2x2 grid
+        fig.set_size_inches(10, 5)
+        
+        for k in range(len(self.L[self.active_plot])):
+            length = "{:.2e}".format(float(self.L[self.active_plot][k]) * 1e-6)
+            print(length)
+            # fetch x data
+            if self.xaxis[self.active_plot] == "gmro":
+                x = self.plot_gmro(length)
+            elif self.xaxis[self.active_plot] != "":
+                x = self.plot_simple(self.xaxis[self.active_plot], length)
+                
+            # fetch y data
+            if self.yaxis[self.active_plot] == "gmro":
+                y = self.plot_gmro(length)
+            elif self.yaxis[self.active_plot] != "":
+                y = self.plot_simple(self.yaxis[self.active_plot], length)
+            
+            # check if log scale is enabled
+            if self.log_scale[self.active_plot] == "on":
+                ax.set_xscale("log")
+                ax.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
+            else:
+                ax.ticklabel_format(axis='both', style='sci', scilimits=(0,0))
+            
+            # plot
+            if self.xaxis[self.active_plot] != "" and self.yaxis[self.active_plot] != "":
+                ax.plot(x, y)
+        ax.set_xlabel(self.xaxis[self.active_plot], loc="left")
+        ax.set_ylabel(self.yaxis[self.active_plot])
+        ax.set_title("Plot ({})".format(self.active_plot), y=0.98)
+        ax.grid()
+        
+        canvas = FigureCanvasTkAgg(fig, master=self.root)
+        canvas.draw()
+
+        # figures have fixed size so they are equal when saved
+        canvas.get_tk_widget().place(relx=0.025, rely=0.025)
+        self.root.update()
+
 
     def update_plot(self):
         # fetch user inputs
+        
+        if self.single_plot_checkbox.get() == "on":
+            self.single_plot()
+            return
         
         # process lengths
         self.L[self.active_plot] = self.L_entry.get()
         if ':' in self.L[self.active_plot]:
             self.L[self.active_plot] = self.L[self.active_plot].split(":")
+        else:
+            self.L[self.active_plot] = [self.L[self.active_plot]]
         
         self.vds[self.active_plot] = "{:.2e}".format(float(self.vds_entry.get())) # convert to scientific notation
         self.log_scale[self.active_plot] = self.log_scale_checkbox.get()
