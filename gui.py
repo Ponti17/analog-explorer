@@ -79,6 +79,10 @@ class ctkApp:
                            "b": "1",
                            "c": "1",
                            "d": "1"}
+        self.pros_L     = {"a": "1",
+                           "b": "1",
+                           "c": "1",
+                           "d": "1"}
         self.log_scale  = {"a": "off",
                            "b": "off",
                            "c": "off",
@@ -201,24 +205,29 @@ class ctkApp:
         filename = "nch_full_sim.csv"
         self.model = pd.read_csv(filename)
         
-    def plot_gmro(self):
-        search_params = [self.vds[self.active_plot], self.L[self.active_plot]]
+    def plot_gmro(self, length):
+        search_params = [self.vds[self.active_plot], length]
         data = []
         data.append([title for title in self.model.columns if all(param in title for param in search_params) and "gm " in title])
         data.append([title for title in self.model.columns if all(param in title for param in search_params) and "gds" in title])
         gmro = self.model[data[0][1]] / self.model[data[1][1]]
         return gmro
     
-    def plot_simple(self, param):
-        search_params = [self.vds[self.active_plot], self.L[self.active_plot], param]
+    def plot_simple(self, param, length):
+        search_params = [self.vds[self.active_plot], length, param]
         data = [title for title in self.model.columns if all(param in title for param in search_params)]
         retval = self.model[data[1]]
         return retval
 
     def update_plot(self):
         # fetch user inputs
+        
+        # process lengths
+        self.L[self.active_plot] = self.L_entry.get()
+        if ':' in self.L[self.active_plot]:
+            self.L[self.active_plot] = self.L[self.active_plot].split(":")
+        
         self.vds[self.active_plot] = "{:.2e}".format(float(self.vds_entry.get())) # convert to scientific notation
-        self.L[self.active_plot] = "{:.2e}".format(float(self.L_entry.get()) * 1e-6)
         self.log_scale[self.active_plot] = self.log_scale_checkbox.get()
         
         # fetch from dropdowns
@@ -243,31 +252,32 @@ class ctkApp:
         plot = 0
         for i in range(plot_rows):
             for j in range(plot_columns):
-                
-                # fetch x data
-                if self.xaxis[self.plots[plot]] == "gmro":
-                    x = self.plot_gmro()
-                elif self.xaxis[self.plots[plot]] != "":
-                    x = self.plot_simple(self.xaxis[self.plots[plot]])
+                for k in range(len(self.L[self.active_plot])):
+                    length = "{:.2e}".format(float(self.L[self.active_plot][k]) * 1e-6)
+                    # fetch x data
+                    if self.xaxis[self.plots[plot]] == "gmro":
+                        x = self.plot_gmro(length)
+                    elif self.xaxis[self.plots[plot]] != "":
+                        x = self.plot_simple(self.xaxis[self.plots[plot]], length)
+                        
+                    # fetch y data
+                    if self.yaxis[self.plots[plot]] == "gmro":
+                        y = self.plot_gmro(length)
+                    elif self.yaxis[self.plots[plot]] != "":
+                        y = self.plot_simple(self.yaxis[self.plots[plot]], length)
                     
-                # fetch y data
-                if self.yaxis[self.plots[plot]] == "gmro":
-                    y = self.plot_gmro()
-                elif self.yaxis[self.plots[plot]] != "":
-                    y = self.plot_simple(self.yaxis[self.plots[plot]])
-                
-                # check if log scale is enabled
-                if self.log_scale[self.plots[plot]] == "on":
-                    axs[i, j].set_xscale("log")
-                    axs[i, j].ticklabel_format(axis='y', style='sci', scilimits=(0,0))
-                else:
-                    axs[i, j].ticklabel_format(axis='both', style='sci', scilimits=(0,0))
-                
-                # plot
-                if self.xaxis[self.plots[plot]] != "" and self.yaxis[self.plots[plot]] != "":
-                    axs[i, j].plot(x, y)
-                    axs[i, j].set_xlabel(self.xaxis[self.plots[plot]], loc="left")
-                    axs[i, j].set_ylabel(self.yaxis[self.plots[plot]])
+                    # check if log scale is enabled
+                    if self.log_scale[self.plots[plot]] == "on":
+                        axs[i, j].set_xscale("log")
+                        axs[i, j].ticklabel_format(axis='y', style='sci', scilimits=(0,0))
+                    else:
+                        axs[i, j].ticklabel_format(axis='both', style='sci', scilimits=(0,0))
+                    
+                    # plot
+                    if self.xaxis[self.plots[plot]] != "" and self.yaxis[self.plots[plot]] != "":
+                        axs[i, j].plot(x, y)
+                axs[i, j].set_xlabel(self.xaxis[self.plots[plot]], loc="left")
+                axs[i, j].set_ylabel(self.yaxis[self.plots[plot]])
                 axs[i, j].set_title("Plot ({})".format(self.plots[plot]), y=0.98)
                 axs[i, j].grid()
                 plot += 1
