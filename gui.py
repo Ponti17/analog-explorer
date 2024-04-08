@@ -208,6 +208,12 @@ class ctkApp:
         data.append([title for title in self.model.columns if all(param in title for param in search_params) and "gds" in title])
         gmro = self.model[data[0][1]] / self.model[data[1][1]]
         return gmro
+    
+    def plot_simple(self, param):
+        search_params = [self.vds[self.active_plot], self.L[self.active_plot], param]
+        data = [title for title in self.model.columns if all(param in title for param in search_params)]
+        retval = self.model[data[1]]
+        return retval
 
     def update_plot(self):
         # fetch user inputs
@@ -229,38 +235,34 @@ class ctkApp:
         fig, axs = plt.subplots(plot_rows, plot_columns) # four subplots in a 2x2 grid
         fig.set_size_inches(10, 5)
         fig.tight_layout(pad=2.5)
-        
-        # define params to find in model
-        search_params = [self.vds[self.active_plot], self.L[self.active_plot], self.yaxis[self.active_plot]]
-        y_data = [title for title in self.model.columns if all(param in title for param in search_params)]
-        search_params = [self.vds[self.active_plot], self.L[self.active_plot], self.xaxis[self.active_plot]]
-        x_data = [title for title in self.model.columns if all(param in title for param in search_params)]
-        
-        if y_data == [] or x_data == []:
-            print("No data found")
-            return
-        
-        self.xaxis_title[self.active_plot] = x_data[1]
-        self.yaxis_title[self.active_plot] = y_data[1]
 
         plot = 0
         for i in range(plot_rows):
             for j in range(plot_columns):
-                x_title = self.xaxis_title[self.plots[plot]]
-                y_title = self.yaxis_title[self.plots[plot]]
-                if x_title in self.model and y_title in self.model:
-                    x = self.model[x_title]
-                    y = self.model[y_title]
+                
+                # fetch x data
+                if self.xaxis[self.plots[plot]] == "gmro":
+                    x = self.plot_gmro()
+                else:
+                    x = self.plot_simple(self.xaxis[self.plots[plot]])
                     
-                    if self.log_scale[self.plots[plot]] == "on":
-                        axs[i, j].set_xscale("log")
-                        axs[i, j].ticklabel_format(axis='y', style='sci', scilimits=(0,0))
-                    else:
-                        axs[i, j].ticklabel_format(axis='both', style='sci', scilimits=(0,0))
-                    
-                    axs[i, j].plot(x, y)
-                    axs[i, j].set_xlabel(self.xaxis[self.active_plot], loc="left")
-                    axs[i, j].set_ylabel(self.yaxis[self.active_plot])
+                # fetch y data
+                if self.yaxis[self.plots[plot]] == "gmro":
+                    y = self.plot_gmro()
+                else:
+                    y = self.plot_simple(self.yaxis[self.plots[plot]])
+                
+                # check if log scale is enabled
+                if self.log_scale[self.plots[plot]] == "on":
+                    axs[i, j].set_xscale("log")
+                    axs[i, j].ticklabel_format(axis='y', style='sci', scilimits=(0,0))
+                else:
+                    axs[i, j].ticklabel_format(axis='both', style='sci', scilimits=(0,0))
+                
+                # plot
+                axs[i, j].plot(x, y)
+                axs[i, j].set_xlabel(self.xaxis[self.plots[plot]], loc="left")
+                axs[i, j].set_ylabel(self.yaxis[self.plots[plot]])
                 axs[i, j].set_title("Plot ({})".format(self.plots[plot]), y=0.98)
                 axs[i, j].grid()
                 plot += 1
