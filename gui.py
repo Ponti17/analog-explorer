@@ -319,7 +319,8 @@ class ctkApp:
             # plot
             if self.xaxis[self.active_plot] != "" and self.yaxis[self.active_plot] != "":
                 ax.plot(x, y, label="L = {} m".format(length))
-        ax.legend()
+        if self.legend_checkbox.get() == "on":
+            ax.legend()
         ax.set_xlabel(self.xaxis[self.active_plot], loc="left")
         ax.set_ylabel(self.yaxis[self.active_plot])
         ax.set_title("Plot ({})".format(self.active_plot), y=0.98)
