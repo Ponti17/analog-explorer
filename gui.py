@@ -36,6 +36,14 @@ class ctkApp:
                                     command=self.update_plot)
         self.button.place(relx=0.9,rely=0.5)
         
+        
+        self.save_button = ctk.CTkButton(master=self.root,
+                                    text="Save Fig",
+                                    width=100,
+                                    height=50,
+                                    command=self.save)
+        self.save_button.place(relx=0.8,rely=0.5)
+        
         self.quit_button = ctk.CTkButton(master=self.root,
                                     text="Quit",
                                     width=100,
@@ -209,6 +217,10 @@ class ctkApp:
     def load_model(self):
         filename = "nch_full_sim.csv"
         self.model = pd.read_csv(filename)
+        
+    def save(self):
+        print("Saving as plot.png")
+        plt.savefig("plot.png")
         
     def plot_gmro(self, length):
         search_params = [self.vds[self.active_plot], length]
