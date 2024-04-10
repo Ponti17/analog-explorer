@@ -34,7 +34,7 @@ class ctkApp:
                                     width=100,
                                     height=50,
                                     command=self.update_plot)
-        self.button.place(relx=0.9,rely=0.5)
+        self.button.place(relx=0.9,rely=0.55)
         
         
         self.save_button = ctk.CTkButton(master=self.root,
@@ -42,14 +42,14 @@ class ctkApp:
                                     width=100,
                                     height=50,
                                     command=self.save)
-        self.save_button.place(relx=0.8,rely=0.5)
+        self.save_button.place(relx=0.8,rely=0.55)
         
         self.quit_button = ctk.CTkButton(master=self.root,
                                     text="Quit",
                                     width=100,
                                     height=50,
                                     command=self.quit)
-        self.quit_button.place(relx=0.9,rely=0.6)
+        self.quit_button.place(relx=0.9,rely=0.65)
         
         # ----------- VARIABLES ------------
         
@@ -427,5 +427,5 @@ class ctkApp:
         self.root.quit()
         self.root.destroy()
 
-if __name__ == "__main__":       
+if __name__ == "__main__":
     CTK_Window = ctkApp()
