@@ -71,7 +71,7 @@ class ctkApp:
                             "c": "",
                             "d": ""}
         self.models = ["nch"]
-        self.axis_variables = ["gmoverid", "gm", "vgs", "cgg", "gds", "gmro", "id/w"]
+        self.axis_variables = ["gmoverid", "gm", "vgs", "gds", "gmro", "id/w", "ft"]
         self.plots = ["a", "b", "c", "d"]
         
         # user inputs
@@ -236,6 +236,14 @@ class ctkApp:
         retval = self.model[data[1]]/(1e-6)
         return retval
     
+    def plot_ft(self, length):
+        search_params = [self.vds[self.active_plot], length]
+        data = []
+        data.append([title for title in self.model.columns if all(param in title for param in search_params) and "gm " in title])
+        data.append([title for title in self.model.columns if all(param in title for param in search_params) and "cgg" in title])
+        retval = self.model[data[0][1]] / (2 * np.pi * self.model[data[1][1]])
+        return retval
+    
     def plot_simple(self, param, length):
         search_params = [self.vds[self.active_plot], length, param]
         data = [title for title in self.model.columns if all(param in title for param in search_params)]
@@ -268,6 +276,8 @@ class ctkApp:
                 x = self.plot_gmro(length)
             elif self.xaxis[self.active_plot] == "id/w":
                 x = self.plot_idw(length)
+            elif self.xaxis[self.active_plot] == "ft":
+                x = self.plot_ft(length)
             elif self.xaxis[self.active_plot] != "":
                 x = self.plot_simple(self.xaxis[self.active_plot], length)
                 
@@ -276,6 +286,8 @@ class ctkApp:
                 y = self.plot_gmro(length)
             elif self.yaxis[self.active_plot] == "id/w":
                 y = self.plot_idw(length)
+            elif self.yaxis[self.active_plot] == "ft":
+                y = self.plot_ft(length)
             elif self.yaxis[self.active_plot] != "":
                 y = self.plot_simple(self.yaxis[self.active_plot], length)
             
@@ -348,6 +360,8 @@ class ctkApp:
                         x = self.plot_gmro(length)
                     elif self.xaxis[self.plots[plot]] == "id/w":
                         x = self.plot_idw(length)
+                    elif self.xaxis[self.plots[plot]] == "ft":
+                        x = self.plot_ft(length)
                     elif self.xaxis[self.plots[plot]] != "":
                         x = self.plot_simple(self.xaxis[self.plots[plot]], length)
                         
@@ -356,6 +370,8 @@ class ctkApp:
                         y = self.plot_gmro(length)
                     elif self.yaxis[self.plots[plot]] == "id/w":
                         y = self.plot_idw(length)
+                    elif self.yaxis[self.plots[plot]] == "ft":
+                        y = self.plot_ft(length)
                     elif self.yaxis[self.plots[plot]] != "":
                         y = self.plot_simple(self.yaxis[self.plots[plot]], length)
                     
