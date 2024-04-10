@@ -193,6 +193,11 @@ class ctkApp:
         
         self.single_plot_checkbox = ctk.CTkCheckBox(master=self.root, text="Single Plot", onvalue="on", offvalue="off")
         self.single_plot_checkbox.place(relx=0.9, rely=0.425)
+        
+        # ----------- LEGEND CHECKBOX ------------
+        
+        self.legend_checkbox = ctk.CTkCheckBox(master=self.root, text="Show Legend", onvalue="on", offvalue="off")
+        self.legend_checkbox.place(relx=0.9, rely=0.475)
 
         # ----------- START ------------
         self.load_model()
