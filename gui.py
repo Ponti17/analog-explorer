@@ -12,30 +12,35 @@ import numpy as np
 
 class ctkApp:
     def __init__(self):
-        # ctk setup
+        self.init_ctk()
+        self.setup_frame()
+        self.setup_buttons()
+        self.setup_variables()
+        self.setup_dropdowns()
+        self.setup_entries()
+        self.setup_checkboxes()
+        self.run()
+        
+    def init_ctk(self):
         ctk.set_appearance_mode("dark")
         self.root = ctk.CTk()
         self.root.geometry("1600x800")
         self.root.title("analog-py-designer")
-
-        # ----------- FRAME ------------
         
+    def setup_frame(self):
         self.frame = ctk.CTkFrame(master=self.root,
                             height =self.root.winfo_height()*0.9,
                             width  =self.root.winfo_width()*1.6,
                             fg_color="darkblue")
-
         self.frame.place(relx=0.025, rely=0.025)
-        
-        # ----------- BUTTONS ------------
-        
+    
+    def setup_buttons(self):
         self.button = ctk.CTkButton(master=self.root,
                                     text="Plot",
                                     width=100,
                                     height=50,
                                     command=self.update_plot)
         self.button.place(relx=0.9,rely=0.55)
-        
         
         self.save_button = ctk.CTkButton(master=self.root,
                                     text="Save Fig",
@@ -51,8 +56,7 @@ class ctkApp:
                                     command=self.quit)
         self.quit_button.place(relx=0.9,rely=0.65)
         
-        # ----------- VARIABLES ------------
-        
+    def setup_variables(self):
         self.active_plot = "a"
         self.yaxis      = {"a": "",
                            "b": "",
@@ -95,35 +99,33 @@ class ctkApp:
                            "b": "off",
                            "c": "off",
                            "d": "off"}
-                
-        # ----------- ACTIVE PLOT DROPDOWN ------------
-
+        
+    def setup_dropdowns(self):
+        # active plot
         self.axis_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
         self.axis_text.place(relx=0.85, rely=0.075)
         self.axis_text.insert("0.0", "Plot:")
         self.axis_text.configure(state="disabled") # READONLY after insert
 
         self.xaxis_dropdown = ctk.CTkComboBox(master=self.root,
-                                   values=self.plots,
-                                   command=self.set_active_plot)
+                                values=self.plots,
+                                command=self.set_active_plot)
         self.xaxis_dropdown.place(relx=0.9,rely=0.08)
         self.xaxis_dropdown.set("a")
                         
-        # ----------- ACTIVE MODEL DROPDOWN ------------
-
+        # active model
         self.model_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
         self.model_text.place(relx=0.85, rely=0.125)
         self.model_text.insert("0.0", "Model:")
         self.model_text.configure(state="disabled") # READONLY after insert
 
         self.model_dropdown = ctk.CTkComboBox(master=self.root,
-                                   values=self.models,
-                                   command=self.set_active_model)
+                                values=self.models,
+                                command=self.set_active_model)
         self.model_dropdown.place(relx=0.9,rely=0.13)
         self.model_dropdown.set("nch")
 
-        # ----------- X/Y AXIS DROPDOWN ------------
-        
+        # axis dropdowns
         self.axis_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
         self.axis_text.place(relx=0.85, rely=0.175)
         self.axis_text.insert("0.0", "X-axis")
@@ -135,8 +137,8 @@ class ctkApp:
         self.axis_text.configure(state="disabled") # READONLY after insert
 
         self.xaxis_dropdown = ctk.CTkComboBox(master=self.root,
-                                   values=self.axis_variables,
-                                   command=self.set_xaxis)
+                                values=self.axis_variables,
+                                command=self.set_xaxis)
         self.xaxis_dropdown.place(relx=0.9,rely=0.18)
         self.xaxis_dropdown.set("vgs")
 
@@ -146,8 +148,8 @@ class ctkApp:
         self.yaxis_dropdown.place(relx=0.9,rely=0.23)
         self.yaxis_dropdown.set("gmoverid")
         
-        # ----------- L ENTRY FIELD ------------
-
+    def setup_entries(self):
+        # length
         self.L_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
         self.L_text.place(relx=0.85, rely=0.275)
         self.L_text.insert("0.0", "L (u):")
@@ -165,8 +167,7 @@ class ctkApp:
         )
         self.L_entry.place(relx=0.9,rely=0.28)
         
-        # ----------- VDS ENTRY FIELD ------------
-        
+        # vds
         self.vds_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
         self.vds_text.place(relx=0.85, rely=0.325)
         self.vds_text.insert("0.0", "VDS:")
@@ -184,22 +185,20 @@ class ctkApp:
         )
         self.vds_entry.place(relx=0.9,rely=0.33)
         
-        # ----------- LOG CHECKBOX ------------
-        
+    def setup_checkboxes(self):
+        # log scale
         self.log_scale_checkbox = ctk.CTkCheckBox(master=self.root, text="Log Scale", onvalue="on", offvalue="off")
         self.log_scale_checkbox.place(relx=0.9, rely=0.375)
         
-        # ----------- SINGLE PLOT CHECKBOX ------------
-        
+        # single plot
         self.single_plot_checkbox = ctk.CTkCheckBox(master=self.root, text="Single Plot", onvalue="on", offvalue="off")
         self.single_plot_checkbox.place(relx=0.9, rely=0.425)
         
-        # ----------- LEGEND CHECKBOX ------------
-        
+        # show legend
         self.legend_checkbox = ctk.CTkCheckBox(master=self.root, text="Show Legend", onvalue="on", offvalue="off")
         self.legend_checkbox.place(relx=0.9, rely=0.475)
 
-        # ----------- START ------------
+    def run(self):
         self.load_model()
         self.root.mainloop()
         
