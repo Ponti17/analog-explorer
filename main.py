@@ -13,8 +13,10 @@ import numpy as np
 from _ctkcore import ctk_core
 from _variables import py_designer_var
 from _guisetup import gui
+from _handledata import dataHandler
+from _plot import guiplot
 
-class py_analog_designer(ctk_core, py_designer_var, gui):
+class py_analog_designer(ctk_core, py_designer_var, gui, dataHandler, guiplot):
     def __init__(self):
         self.init_ctk()
         self.setup_frame()
@@ -27,64 +29,15 @@ class py_analog_designer(ctk_core, py_designer_var, gui):
         
     def set_active_model(self, value):
         self.active_model = value
-        print(self.active_model)
     
     def set_active_plot(self, value):
         self.active_plot = value
-        print(self.active_plot)
         
     def set_xaxis(self, value):
         self.xaxis[self.active_plot] = value
-        print(self.xaxis)
     
     def set_yaxis(self, value):
         self.yaxis[self.active_plot] = value
-        print(self.yaxis)
-        
-    def load_model(self):
-        filename = "nch_full_sim.pkl"
-        self.model = pd.read_pickle(filename)
-        
-    def save(self):
-        print("Saving as plot.png")
-        plt.savefig("plot.png")
-        
-    def plot_gmro(self, length):
-        search_params = [self.vds[self.active_plot], length]
-        data = []
-        data.append([title for title in self.model.columns if all(param in title for param in search_params) and "gm " in title])
-        data.append([title for title in self.model.columns if all(param in title for param in search_params) and "gds" in title])
-        gmro = self.model[data[0][1]] / self.model[data[1][1]]
-        return gmro
-    
-    def plot_idw(self, length):
-        search_params = [self.vds[self.active_plot], length, ":id"]
-        data = [title for title in self.model.columns if all(param in title for param in search_params)]
-        retval = self.model[data[1]]/(1e-6)
-        return retval
-    
-    def plot_ft(self, length):
-        search_params = [self.vds[self.active_plot], length]
-        data = []
-        data.append([title for title in self.model.columns if all(param in title for param in search_params) and "gm " in title])
-        data.append([title for title in self.model.columns if all(param in title for param in search_params) and "cgg" in title])
-        retval = self.model[data[0][1]] / (2 * np.pi * self.model[data[1][1]])
-        return retval
-    
-    def plot_ft_gmoverid(self, length):
-        search_params = [self.vds[self.active_plot], length]
-        data = []
-        data.append([title for title in self.model.columns if all(param in title for param in search_params) and "gm " in title])
-        data.append([title for title in self.model.columns if all(param in title for param in search_params) and "cgg" in title])
-        data.append([title for title in self.model.columns if all(param in title for param in search_params) and "gmoverid" in title])
-        retval = self.model[data[0][1]] / (2 * np.pi * self.model[data[1][1]]) * self.model[data[2][1]]
-        return retval
-    
-    def plot_simple(self, param, length):
-        search_params = [self.vds[self.active_plot], length, param]
-        data = [title for title in self.model.columns if all(param in title for param in search_params)]
-        retval = self.model[data[1]]
-        return retval
     
     def single_plot(self):
         # process lengths
@@ -109,27 +62,27 @@ class py_analog_designer(ctk_core, py_designer_var, gui):
             print(length)
             # fetch x data
             if self.xaxis[self.active_plot] == "gmro":
-                x = self.plot_gmro(length)
+                x = self.get_gmro(length)
             elif self.xaxis[self.active_plot] == "id/w":
-                x = self.plot_idw(length)
+                x = self.get_idw(length)
             elif self.xaxis[self.active_plot] == "ft":
-                x = self.plot_ft(length)
+                x = self.get_ft(length)
             elif self.xaxis[self.active_plot] == "ft*gmoverid":
-                x = self.plot_ft_gmoverid(length)
+                x = self.get_ft_gmoverid(length)
             elif self.xaxis[self.active_plot] != "":
-                x = self.plot_simple(self.xaxis[self.active_plot], length)
+                x = self.get_simple(self.xaxis[self.active_plot], length)
                 
             # fetch y data
             if self.yaxis[self.active_plot] == "gmro":
-                y = self.plot_gmro(length)
+                y = self.get_gmro(length)
             elif self.yaxis[self.active_plot] == "id/w":
-                y = self.plot_idw(length)
+                y = self.get_idw(length)
             elif self.yaxis[self.active_plot] == "ft":
-                y = self.plot_ft(length)
+                y = self.get_ft(length)
             elif self.yaxis[self.active_plot] == "ft*gmoverid":
-                y = self.plot_ft_gmoverid(length)
+                y = self.get_ft_gmoverid(length)
             elif self.yaxis[self.active_plot] != "":
-                y = self.plot_simple(self.yaxis[self.active_plot], length)
+                y = self.get_simple(self.yaxis[self.active_plot], length)
             
             # check if log scale is enabled
             if self.log_scale[self.active_plot] == "on":
@@ -199,27 +152,27 @@ class py_analog_designer(ctk_core, py_designer_var, gui):
                     length = "{:.2e}".format(float(self.L[self.active_plot][k]) * 1e-6)
                     # fetch x data
                     if self.xaxis[self.plots[plot]] == "gmro":
-                        x = self.plot_gmro(length)
+                        x = self.get_gmro(length)
                     elif self.xaxis[self.plots[plot]] == "id/w":
-                        x = self.plot_idw(length)
+                        x = self.get_idw(length)
                     elif self.xaxis[self.plots[plot]] == "ft":
-                        x = self.plot_ft(length)
+                        x = self.get_ft(length)
                     elif self.xaxis[self.plots[plot]] == "ft*gmoverid":
-                        x = self.plot_ft_gmoverid(length)
+                        x = self.get_ft_gmoverid(length)
                     elif self.xaxis[self.plots[plot]] != "":
-                        x = self.plot_simple(self.xaxis[self.plots[plot]], length)
+                        x = self.get_simple(self.xaxis[self.plots[plot]], length)
                         
                     # fetch y data
                     if self.yaxis[self.plots[plot]] == "gmro":
-                        y = self.plot_gmro(length)
+                        y = self.get_gmro(length)
                     elif self.yaxis[self.plots[plot]] == "id/w":
-                        y = self.plot_idw(length)
+                        y = self.get_idw(length)
                     elif self.yaxis[self.plots[plot]] == "ft":
-                        y = self.plot_ft(length)
+                        y = self.get_ft(length)
                     elif self.yaxis[self.plots[plot]] == "ft*gmoverid":
-                        y = self.plot_ft_gmoverid(length)
+                        y = self.get_ft_gmoverid(length)
                     elif self.yaxis[self.plots[plot]] != "":
-                        y = self.plot_simple(self.yaxis[self.plots[plot]], length)
+                        y = self.get_simple(self.yaxis[self.plots[plot]], length)
                     
                     # check if log scale is enabled
                     if self.log_scale[self.plots[plot]] == "on":
@@ -245,10 +198,6 @@ class py_analog_designer(ctk_core, py_designer_var, gui):
         # figures have fixed size so they are equal when saved
         canvas.get_tk_widget().place(relx=0.025, rely=0.025)
         self.root.update()
-
-    def quit(self):
-        self.root.quit()
-        self.root.destroy()
 
 if __name__ == "__main__":
     CTK_Window = py_analog_designer()
