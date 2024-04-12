@@ -10,3 +10,7 @@ class ctk_core:
     def ctk_run(self):
         self.load_model()
         self.root.mainloop()
+        
+    def quit(self):
+        self.root.quit()
+        self.root.destroy()
