@@ -2,6 +2,8 @@ class py_designer_var:
     def init_variables(self):
         self.x_scale = 1.0
         self.y_scale = 1.0
+        self.dataformat = "csv"
+        
         self.active_plot = "a"
         self.yaxis      = {"a": "",
                            "b": "",

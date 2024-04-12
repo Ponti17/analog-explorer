@@ -3,9 +3,15 @@ import numpy as np
 
 class dataHandler:
     def load_model(self):
-        filename = "nch_full_sim.pkl"
+        filename = ("nch_full_sim." + self.dataformat)
         print("Loading model... {}".format(filename))
-        self.model = pd.read_pickle(filename)
+        if self.dataformat == "csv":
+            self.model = pd.read_csv(filename)
+        elif self.dataformat == "pkl":
+            self.model = pd.read_pickle(filename)
+        else:
+            print("Unsupported data format.")
+            exit()
         print("Done.")
         
     def get_gmro(self, length):
