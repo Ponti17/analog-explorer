@@ -42,8 +42,8 @@ class py_analog_designer(ctk_core, py_designer_var, gui):
         print(self.yaxis)
         
     def load_model(self):
-        filename = "nch_full_sim.csv"
-        self.model = pd.read_csv(filename)
+        filename = "nch_full_sim.pkl"
+        self.model = pd.read_pickle(filename)
         
     def save(self):
         print("Saving as plot.png")
