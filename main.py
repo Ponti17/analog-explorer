@@ -18,10 +18,11 @@ from _plot import guiplot
 
 class py_analog_designer(ctk_core, py_designer_var, gui, dataHandler, guiplot):
     def __init__(self):
+        self.init_variables()
+        self.init()
         self.init_ctk()
         self.setup_frame()
         self.setup_buttons()
-        self.init_variables()
         self.setup_dropdowns()
         self.setup_entries()
         self.setup_checkboxes()
@@ -55,7 +56,7 @@ class py_analog_designer(ctk_core, py_designer_var, gui, dataHandler, guiplot):
         self.yaxis[self.active_plot] = self.yaxis_dropdown.get()
         
         fig, ax = plt.subplots() # four subplots in a 2x2 grid
-        fig.set_size_inches(10, 5)
+        fig.set_size_inches(10*self.x_scale, 5*self.y_scale)
         
         for k in range(len(self.L[self.active_plot])):
             length = "{:.2e}".format(float(self.L[self.active_plot][k]) * 1e-6)
@@ -142,7 +143,8 @@ class py_analog_designer(ctk_core, py_designer_var, gui, dataHandler, guiplot):
             return
 
         fig, axs = plt.subplots(plot_rows, plot_columns) # four subplots in a 2x2 grid
-        fig.set_size_inches(10, 5)
+        fig.set_size_inches(10*self.x_scale, 5*self.y_scale)
+        fig.set_dpi(100)
         fig.tight_layout(pad=2.5)
 
         plot = 0
