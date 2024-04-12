@@ -10,14 +10,15 @@ from matplotlib.figure import Figure
 
 import numpy as np
 
-from gui_ctk import ctk_setup
+from _ctksetup import ctk_setup
+from _variables import py_designer_var
 
-class py_analog_designer(ctk_setup):
+class py_analog_designer(ctk_setup, py_designer_var):
     def __init__(self):
         self.init_ctk()
         self.setup_frame()
         self.setup_buttons()
-        self.setup_variables()
+        self.init_variables()
         self.setup_dropdowns()
         self.setup_entries()
         self.setup_checkboxes()
@@ -51,50 +52,6 @@ class py_analog_designer(ctk_setup):
                                     height=50,
                                     command=self.quit)
         self.quit_button.place(relx=0.9,rely=0.65)
-        
-    def setup_variables(self):
-        self.active_plot = "a"
-        self.yaxis      = {"a": "",
-                           "b": "",
-                           "c": "",
-                           "d": ""}
-        self.xaxis      = {"a": "",
-                           "b": "",
-                           "c": "",
-                           "d": ""}
-        self.xaxis_title = {"a": "",
-                            "b": "",
-                            "c": "",
-                            "d": ""}
-        self.yaxis_title = {"a": "",
-                            "b": "",
-                            "c": "",
-                            "d": ""}
-        self.models = ["nch"]
-        self.axis_variables = ["gmoverid", "gm", "vgs", "gds", "gmro", "id/w", "ft", "ft*gmoverid"]
-        self.plots = ["a", "b", "c", "d"]
-        
-        # user inputs
-        self.model      = {"a": "nch",
-                           "b": "nch",
-                           "c": "nch",
-                           "d": "nch"}
-        self.vds        = {"a": "1",
-                           "b": "1",
-                           "c": "1",
-                           "d": "1"}
-        self.L          = {"a": "1",
-                           "b": "1",
-                           "c": "1",
-                           "d": "1"}
-        self.pros_L     = {"a": "1",
-                           "b": "1",
-                           "c": "1",
-                           "d": "1"}
-        self.log_scale  = {"a": "off",
-                           "b": "off",
-                           "c": "off",
-                           "d": "off"}
         
     def setup_dropdowns(self):
         # active plot
