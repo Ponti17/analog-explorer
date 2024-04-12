@@ -10,7 +10,9 @@ from matplotlib.figure import Figure
 
 import numpy as np
 
-class ctkApp:
+from gui_ctk import ctk_setup
+
+class py_analog_designer(ctk_setup):
     def __init__(self):
         self.init_ctk()
         self.setup_frame()
@@ -20,12 +22,6 @@ class ctkApp:
         self.setup_entries()
         self.setup_checkboxes()
         self.run()
-        
-    def init_ctk(self):
-        ctk.set_appearance_mode("dark")
-        self.root = ctk.CTk()
-        self.root.geometry("1600x800")
-        self.root.title("analog-py-designer")
         
     def setup_frame(self):
         self.frame = ctk.CTkFrame(master=self.root,
@@ -428,4 +424,4 @@ class ctkApp:
         self.root.destroy()
 
 if __name__ == "__main__":
-    CTK_Window = ctkApp()
+    CTK_Window = py_analog_designer()
