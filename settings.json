@@ -1,4 +1,5 @@
 {
     "RESX": 3456,
-    "RESY": 2160
+    "RESY": 2160,
+    "DATAFORMAT": "pkl"
 }

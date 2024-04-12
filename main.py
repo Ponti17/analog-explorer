@@ -111,8 +111,6 @@ class py_analog_designer(ctk_core, py_designer_var, gui, dataHandler, guiplot):
 
 
     def update_plot(self):
-        # fetch user inputs
-        
         if self.single_plot_checkbox.get() == "on":
             self.single_plot()
             return
