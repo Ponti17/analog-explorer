@@ -10,10 +10,11 @@ from matplotlib.figure import Figure
 
 import numpy as np
 
-from _ctksetup import ctk_setup
+from _ctkcore import ctk_core
 from _variables import py_designer_var
+from _guisetup import gui
 
-class py_analog_designer(ctk_setup, py_designer_var):
+class py_analog_designer(ctk_core, py_designer_var, gui):
     def __init__(self):
         self.init_ctk()
         self.setup_frame()
@@ -22,14 +23,7 @@ class py_analog_designer(ctk_setup, py_designer_var):
         self.setup_dropdowns()
         self.setup_entries()
         self.setup_checkboxes()
-        self.run()
-        
-    def setup_frame(self):
-        self.frame = ctk.CTkFrame(master=self.root,
-                            height =self.root.winfo_height()*0.9,
-                            width  =self.root.winfo_width()*1.6,
-                            fg_color="darkblue")
-        self.frame.place(relx=0.025, rely=0.025)
+        self.ctk_run()
     
     def setup_buttons(self):
         self.button = ctk.CTkButton(master=self.root,
@@ -150,10 +144,6 @@ class py_analog_designer(ctk_setup, py_designer_var):
         # show legend
         self.legend_checkbox = ctk.CTkCheckBox(master=self.root, text="Show Legend", onvalue="on", offvalue="off")
         self.legend_checkbox.place(relx=0.9, rely=0.475)
-
-    def run(self):
-        self.load_model()
-        self.root.mainloop()
         
     def set_active_model(self, value):
         self.active_model = value
