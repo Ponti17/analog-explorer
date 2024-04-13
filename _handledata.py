@@ -3,8 +3,12 @@ import numpy as np
 
 class dataHandler:
     def load_model(self):
-        filename = ("nch_full_sim." + self.dataformat)
+        if self.active_model == "nch":
+            filename = ("nch_full_sim." + self.dataformat)
+        elif self.active_model == "pch":
+            filename = ("pch_full_sim." + self.dataformat)
         print("Loading model... {}".format(filename))
+        
         if self.dataformat == "csv":
             self.model = pd.read_csv(filename)
         elif self.dataformat == "pkl":
@@ -46,6 +50,7 @@ class dataHandler:
         return retval
     
     def get_simple(self, param, length):
+        param = "M0:" + param
         search_params = [self.vds[self.active_plot], length, param]
         data = [title for title in self.model.columns if all(param in title for param in search_params)]
         retval = self.model[data[1]]
