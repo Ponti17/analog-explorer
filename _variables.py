@@ -3,6 +3,8 @@ class py_designer_var:
         self.x_scale = 1.0
         self.y_scale = 1.0
         self.dataformat = "csv"
+        self.pmos = True
+        self.active_model = "nch"
         
         self.active_plot = "a"
         self.yaxis      = {"a": "",
@@ -21,8 +23,8 @@ class py_designer_var:
                             "b": "",
                             "c": "",
                             "d": ""}
-        self.models = ["nch"]
-        self.axis_variables = ["gmoverid", "gm", "vgs", "gds", "gmro", "id/w", "ft", "ft*gmoverid"]
+        self.models = ["nch", "pch"]
+        self.axis_variables = ["gmoverid", "gm", "vgs", "id ", "gds", "gmro", "id/w", "ft", "ft*gmoverid"]
         self.plots = ["a", "b", "c", "d"]
         
         # user inputs
