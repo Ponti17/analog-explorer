@@ -5,6 +5,7 @@ from matplotlib.backends.backend_tkagg import (
 from matplotlib.backend_bases import key_press_handler
 from matplotlib.figure import Figure
 import matplotlib.ticker
+import numpy as np
 
 class guiplot:
     def save(self):
@@ -60,36 +61,43 @@ class guiplot:
             
         # init matplotlib figure
         fig, axs = plt.subplots(plot_size["rows"], plot_size["columns"]) # four subplots in a 2x2 grid
+        
+        # this is kind of retarded, but the for loop fails when there is only one plot since it is not a numpy array
+        axs = np.array(axs)
         fig.set_size_inches(10*self.x_scale, 5*self.y_scale)
         fig.set_dpi(100)
         fig.tight_layout(pad=2.5)
         
         plot = 0
-        for i in range(plot_size["rows"]):
-            for j in range(plot_size["columns"]):
-                for k in range(len(self.L[self.active_plot])):
-                    length = "{:.2e}".format(float(self.L[self.active_plot][k]) * 1e-6)
-                    # fetch x data
-                    x = self.get_axis(self.xaxis[self.plots[plot]], length)
+        for axis in axs.reshape(-1):
+            for k in range(len(self.L[self.active_plot])):
+                length = "{:.2e}".format(float(self.L[self.active_plot][k]) * 1e-6)
+                # fetch x data
+                x = self.get_axis(self.xaxis[self.plots[plot]], length)
 
-                    # fetch y data
-                    y = self.get_axis(self.yaxis[self.plots[plot]], length)
+                # fetch y data
+                y = self.get_axis(self.yaxis[self.plots[plot]], length)
 
-                    # check if log scale is enabled
-                    if self.log_scale[self.plots[plot]] == "on":
-                        axs[i, j].set_xscale("log")
-                        axs[i, j].ticklabel_format(axis='y', style='sci', scilimits=(0,0))
-                    else:
-                        axs[i, j].ticklabel_format(axis='both', style='sci', scilimits=(0,0))
-                    
-                    # plot
-                    if self.xaxis[self.plots[plot]] != "" and self.yaxis[self.plots[plot]] != "":
-                        axs[i, j].plot(x, y)
-                axs[i, j].set_xlabel(self.xaxis[self.plots[plot]], loc="left")
-                axs[i, j].set_ylabel(self.yaxis[self.plots[plot]])
-                axs[i, j].set_title("Plot ({})".format(self.plots[plot]), y=0.98)
-                axs[i, j].grid()
-                plot += 1
+                # check if log scale is enabled
+                if self.log_scale[self.active_plot] == "on":
+                    axis.set_xscale("log")
+                    locmaj = matplotlib.ticker.LogLocator(base=10,numticks=12) 
+                    axis.xaxis.set_major_locator(locmaj)
+                    locmin = matplotlib.ticker.LogLocator(base=10.0,subs=(0.2,0.4,0.6,0.8),numticks=12)
+                    axis.xaxis.set_minor_locator(locmin)
+                    axis.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
+                    axis.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
+                else:
+                    axis.ticklabel_format(axis='both', style='sci', scilimits=(0,0))
+                
+                # plot
+                if self.xaxis[self.plots[plot]] != "" and self.yaxis[self.plots[plot]] != "":
+                    axis.plot(x, y)
+            axis.set_xlabel(self.xaxis[self.plots[plot]], loc="left")
+            axis.set_ylabel(self.yaxis[self.plots[plot]])
+            axis.set_title("Plot ({})".format(self.plots[plot]), y=0.98)
+            axis.grid()
+            plot += 1
                 
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
