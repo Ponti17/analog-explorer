@@ -23,8 +23,8 @@ class py_designer_var:
                             "b": "",
                             "c": "",
                             "d": ""}
-        self.models = ["nch", "pch"]
-        self.axis_variables = ["gmoverid", "gm", "vgs", "id ", "gds", "gmro", "id/w", "ft", "ft*gmoverid"]
+        self.models = ["nch", "pch", "pch_25"]
+        self.axis_variables = ["gmoverid", "gm", "vgs", "id ", "gds", "1/gds", "gmro", "id/w", "ft", "ft*gmoverid"]
         self.plots = ["a", "b", "c", "d"]
         
         # user inputs

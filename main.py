@@ -7,6 +7,7 @@ from matplotlib.backends.backend_tkagg import (
 # Implement the default Matplotlib key bindings.
 from matplotlib.backend_bases import key_press_handler
 from matplotlib.figure import Figure
+import matplotlib.ticker
 
 import numpy as np
 
@@ -70,6 +71,8 @@ class py_analog_designer(ctk_core, py_designer_var, gui, dataHandler, guiplot):
                 x = self.get_ft(length)
             elif self.xaxis[self.active_plot] == "ft*gmoverid":
                 x = self.get_ft_gmoverid(length)
+            elif self.xaxis[self.active_plot] == "1/gds":
+                x = self.get_1_gds(length)
             elif self.xaxis[self.active_plot] != "":
                 x = self.get_simple(self.xaxis[self.active_plot], length)
                 
@@ -82,12 +85,19 @@ class py_analog_designer(ctk_core, py_designer_var, gui, dataHandler, guiplot):
                 y = self.get_ft(length)
             elif self.yaxis[self.active_plot] == "ft*gmoverid":
                 y = self.get_ft_gmoverid(length)
+            elif self.yaxis[self.active_plot] == "1/gds":
+                y = self.get_1_gds(length)
             elif self.yaxis[self.active_plot] != "":
                 y = self.get_simple(self.yaxis[self.active_plot], length)
             
             # check if log scale is enabled
             if self.log_scale[self.active_plot] == "on":
                 ax.set_xscale("log")
+                locmaj = matplotlib.ticker.LogLocator(base=10,numticks=12) 
+                ax.xaxis.set_major_locator(locmaj)
+                locmin = matplotlib.ticker.LogLocator(base=10.0,subs=(0.2,0.4,0.6,0.8),numticks=12)
+                ax.xaxis.set_minor_locator(locmin)
+                ax.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
                 ax.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
             else:
                 ax.ticklabel_format(axis='both', style='sci', scilimits=(0,0))
