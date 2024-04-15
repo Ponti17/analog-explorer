@@ -4,6 +4,7 @@ class py_designer_var:
         self.y_scale = 1.0
         self.dataformat = "csv"
         self.pmos = True
+        self.single_plot = False
         self.active_model = "nch"
         
         self.active_plot = "a"

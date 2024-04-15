@@ -8,7 +8,7 @@ class gui:
         
     def setup_buttons(self):
         self.button = ctk.CTkButton(master=self.root, text="Plot", width=100, height=50,
-                                        command=self.update_plot)
+                                        command=self.new_plot)
         self.button.place(relx=0.9,rely=0.55)
         
         self.save_button = ctk.CTkButton(master=self.root, text="Save Fig", width=100, height=50,
