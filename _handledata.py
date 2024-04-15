@@ -9,6 +9,8 @@ class dataHandler:
             filename = ("pch_full_sim." + self.dataformat)
         elif self.active_model == "pch_25":
             filename = ("pch_25_full_sim." + self.dataformat)
+        elif self.active_model == "pch_hvt":
+            filename = ("pch_hvt_full_sim." + self.dataformat)
         if "pch" in self.active_model:
             self.pmos = True
         else:
