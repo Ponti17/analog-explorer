@@ -92,7 +92,9 @@ class guiplot:
                 
                 # plot
                 if self.xaxis[self.plots[plot]] != "" and self.yaxis[self.plots[plot]] != "":
-                    axis.plot(x, y)
+                    axis.plot(x, y, label="L = {} m".format(length))
+                if self.legend_checkbox.get() == "on":
+                    axis.legend()
             axis.set_xlabel(self.xaxis[self.plots[plot]], loc="left")
             axis.set_ylabel(self.yaxis[self.plots[plot]])
             axis.set_title("Plot ({})".format(self.plots[plot]), y=0.98)
