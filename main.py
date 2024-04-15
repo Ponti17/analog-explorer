@@ -119,6 +119,9 @@ class py_analog_designer(ctk_core, py_designer_var, gui, dataHandler, guiplot):
         canvas.get_tk_widget().place(relx=0.025, rely=0.025)
         self.root.update()
 
+    def new_plot(self):
+        self.parse_input()
+        self.plot()
 
     def update_plot(self):
         if self.single_plot_checkbox.get() == "on":
