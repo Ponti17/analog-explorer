@@ -59,13 +59,6 @@ class dataHandler:
         retval = self.model[data[0][1]] / (2 * np.pi * self.model[data[1][1]]) * self.model[data[2][1]]
         return retval
     
-    def get_1_gds(self, length):
-        param = "M0:" + "gds"
-        search_params = [self.vds[self.active_plot], length]
-        data = [title for title in self.model.columns if all(param in title for param in search_params)]
-        retval = self.model[data[1]]
-        return 1/retval
-    
     def get_simple(self, param, length):
         param = "M0:" + param
         search_params = [self.vds[self.active_plot], length, param]
