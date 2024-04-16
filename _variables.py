@@ -14,7 +14,7 @@ class py_designer_var:
                            "b": "",
                            "c": "",
                            "d": ""}
-        self.models = ["nch", "pch", "pch_25", "pch_hvt"]
+        self.models = ["nch", "pch", "pch_25", "pch_hvt", "pch_lvt"]
         self.axis_variables = ["vgs", "gmoverid", "gmro", "id/w", "ft", "vdsat", "ft*gmoverid", "gm", "id "]
         self.plots = ["a", "b", "c", "d"]
         

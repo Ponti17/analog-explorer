@@ -12,6 +12,8 @@ class dataHandler:
             filename = ("pch_25_full_sim." + self.dataformat)
         elif model == "pch_hvt":
             filename = ("pch_hvt_full_sim." + self.dataformat)
+        elif model == "pch_lvt":
+            filename = ("pch_lvt_full_sim." + self.dataformat)
         if "pch" in model:
             self.pmos = True
         else:
