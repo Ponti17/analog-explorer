@@ -104,7 +104,7 @@ class guiplot:
                     axis.legend()
             axis.set_xlabel(self.xaxis[self.plots[plot]], loc="left")
             axis.set_ylabel(self.yaxis[self.plots[plot]])
-            axis.set_title("Plot ({})".format(self.plots[plot]), y=0.98)
+            axis.set_title("{0}: {1} vs {2}".format(self.active_model, self.xaxis[self.plots[plot]], self.yaxis[self.plots[plot]]))
             axis.grid()
             plot += 1
                 
