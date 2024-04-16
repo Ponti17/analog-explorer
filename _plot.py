@@ -23,8 +23,6 @@ class guiplot:
             retval = self.get_ft(length)
         elif axis == "ft*gmoverid":
             retval = self.get_ft_gmoverid(length)
-        elif axis == "1/gds":
-            retval = self.get_1_gds(length)
         elif axis != "":
             retval = self.get_simple(axis, length)
         return retval
@@ -39,6 +37,9 @@ class guiplot:
         
         # parse vds input
         self.vds[self.active_plot] = "{:.2e}".format(float(self.vds_entry.get()))
+        
+        # active model
+        self.model[self.active_plot] = self.model_dropdown.get()
         
         # fetch log scale checkbox
         self.log_scale[self.active_plot] = self.log_scale_checkbox.get()
@@ -72,6 +73,12 @@ class guiplot:
         for axis in axs.reshape(-1):
             for k in range(len(self.L[self.active_plot])):
                 length = "{:.2e}".format(float(self.L[self.active_plot][k]) * 1e-6)
+                
+                print(self.active_model, self.model[self.plots[plot]])
+                # load model
+                if self.active_model != self.model[self.plots[plot]]:
+                    self.load_model(self.model[self.plots[plot]])
+                
                 # fetch x data
                 x = self.get_axis(self.xaxis[self.plots[plot]], length)
 

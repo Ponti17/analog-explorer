@@ -5,7 +5,6 @@ class py_designer_var:
         self.dataformat = "csv"
         self.pmos = True
         self.single_plot = False
-        self.active_model = "nch"
         self.active_plot = "a"
         self.yaxis      = {"a": "",
                            "b": "",
@@ -24,6 +23,8 @@ class py_designer_var:
                            "b": "nch",
                            "c": "nch",
                            "d": "nch"}
+        self.active_model = ""
+        self.modelDF    = 0
         self.vds        = {"a": "1",
                            "b": "1",
                            "c": "1",
