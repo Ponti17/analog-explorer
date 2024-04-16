@@ -16,7 +16,6 @@ class ctk_core:
         self.root.after(201, lambda :self.root.iconbitmap('bjt.ico'))
         
     def ctk_run(self):
-        self.load_model()
         self.root.mainloop()
 
     def quit(self):
