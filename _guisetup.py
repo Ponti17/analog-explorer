@@ -43,8 +43,7 @@ class gui:
         self.model_text.configure(state="disabled")
 
         self.model_dropdown = ctk.CTkComboBox(master=self.root,
-                                values=self.models,
-                                command=self.set_active_model)
+                                values=self.models)
         self.model_dropdown.place(relx=0.9,rely=0.13)
         self.model_dropdown.set("nch")
 
