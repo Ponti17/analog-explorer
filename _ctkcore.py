@@ -13,6 +13,7 @@ class ctk_core:
         self.root = ctk.CTk()
         self.root.geometry("1600x800")
         self.root.title("analog-py-designer")
+        self.root.after(201, lambda :self.root.iconbitmap('bjt.ico'))
         
     def ctk_run(self):
         self.load_model()
