@@ -15,16 +15,11 @@ class guiplot:
     # returns requested data for axis
     def get_axis(self, axis, length):
         retval = []
-        if axis == "gmro":
-            retval = self.get_gmro(length)
-        elif axis == "id/w":
-            retval = self.get_idw(length)
-        elif axis == "ft":
-            retval = self.get_ft(length)
-        elif axis == "ft*gmoverid":
-            retval = self.get_ft_gmoverid(length)
-        elif axis != "":
-            retval = self.get_simple(axis, length)
+        if axis   == "gmro":        retval = self.get_gmro(length)
+        elif axis == "id/w":        retval = self.get_idw(length)
+        elif axis == "ft":          retval = self.get_ft(length)
+        elif axis == "ft*gmoverid": retval = self.get_ft_gmoverid(length)
+        elif axis != "":            retval = self.get_simple(axis, length)
         return retval
     
     def parse_input(self):
@@ -45,23 +40,19 @@ class guiplot:
         self.log_scale[self.active_plot] = self.log_scale_checkbox.get()
         
         # fetch single plot checkbox
-        if self.single_plot_checkbox.get() == "on":
-            self.single_plot = True
-        else:
-            self.single_plot = False
+        if self.single_plot_checkbox.get() == "on": self.single_plot = True
+        else:                                       self.single_plot = False
         
         # fetch axis from dropdowns
         self.xaxis[self.active_plot] = self.xaxis_dropdown.get()
         self.yaxis[self.active_plot] = self.yaxis_dropdown.get()
         
     def plot(self):
-        if self.single_plot:
-            plot_size = {"rows": 1, "columns": 1}
-        else:
-            plot_size = {"rows": 2, "columns": 2}
+        if self.single_plot:    plot_size = {"rows": 1, "columns": 1}
+        else:                   plot_size = {"rows": 2, "columns": 2}
             
         # init matplotlib figure
-        fig, axs = plt.subplots(plot_size["rows"], plot_size["columns"]) # four subplots in a 2x2 grid
+        fig, axs = plt.subplots(plot_size["rows"], plot_size["columns"])
         
         # this is kind of retarded, but the for loop fails when there is only one plot since it is not a numpy array
         axs = np.array(axs)
