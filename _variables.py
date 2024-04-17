@@ -41,3 +41,7 @@ class py_designer_var:
                            "b": "off",
                            "c": "off",
                            "d": "off"}
+        self.invert_x   = {"a": "off",
+                           "b": "off",
+                           "c": "off",
+                           "d": "off"}

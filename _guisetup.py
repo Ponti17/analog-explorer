@@ -3,25 +3,25 @@ import customtkinter as ctk
 class gui:
     def setup_frame(self):
         self.frame = ctk.CTkFrame(master=self.root, height =self.root.winfo_height()*0.9,
-                                width  =self.root.winfo_width()*1.6, fg_color="darkblue")
+                                width=self.root.winfo_width()*1.6, fg_color="darkblue")
         self.frame.place(relx=0.025, rely=0.025)
         
     def setup_buttons(self):
         self.button = ctk.CTkButton(master=self.root, text="Plot", width=100, height=50,
                                         command=self.new_plot)
-        self.button.place(relx=0.9,rely=0.55)
+        self.button.place(relx=0.9,rely=0.6)
         
         self.save_button = ctk.CTkButton(master=self.root, text="Save Fig", width=100, height=50,
                                         command=self.save)
-        self.save_button.place(relx=0.8,rely=0.55)
+        self.save_button.place(relx=0.8,rely=0.6)
         
         self.load_button = ctk.CTkButton(master=self.root, text="Load Model", width=100, height=50,
                                         command=self.load_model)
-        self.load_button.place(relx=0.8,rely=0.65)
+        self.load_button.place(relx=0.8,rely=0.7)
         
         self.quit_button = ctk.CTkButton(master=self.root, text="Quit", width=100, height=50,
                                         command=self.quit)
-        self.quit_button.place(relx=0.9,rely=0.65)
+        self.quit_button.place(relx=0.9,rely=0.7)
         
     def setup_dropdowns(self):
         # active plot
@@ -119,3 +119,7 @@ class gui:
         # show legend
         self.legend_checkbox = ctk.CTkCheckBox(master=self.root, text="Show Legend", onvalue="on", offvalue="off")
         self.legend_checkbox.place(relx=0.9, rely=0.475)
+        
+        # invert x axis, needed for pmos plots
+        self.invert_x_checkbox = ctk.CTkCheckBox(master=self.root, text="Invert x", onvalue="on", offvalue="off")
+        self.invert_x_checkbox.place(relx=0.9, rely=0.525)
