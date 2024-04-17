@@ -28,18 +28,6 @@ class py_analog_designer(ctk_core, py_designer_var, gui, dataHandler, guiplot):
         self.setup_entries()
         self.setup_checkboxes()
         self.ctk_run()
-        
-    def set_active_model(self, value):
-        self.active_model = value
-    
-    def set_active_plot(self, value):
-        self.active_plot = value
-        
-    def set_xaxis(self, value):
-        self.xaxis[self.active_plot] = value
-    
-    def set_yaxis(self, value):
-        self.yaxis[self.active_plot] = value
 
     def new_plot(self):
         self.parse_input()
