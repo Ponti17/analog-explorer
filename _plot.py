@@ -83,6 +83,8 @@ class guiplot:
 
                 # fetch y data
                 y = self.get_axis(self.yaxis[self.plots[plot]], length)
+                
+                if len(x) == 0 or len(y) == 0: continue
 
                 # check if log scale is enabled
                 if self.log_scale[self.active_plot] == "on":
