@@ -37,6 +37,9 @@ class guiplot:
         # fetch log scale checkbox
         self.log_scale[self.active_plot] = self.log_scale_checkbox.get()
         
+        # fetch invert x checkbox
+        self.invert_x[self.active_plot] = self.invert_x_checkbox.get()
+        
         # fetch single plot checkbox
         if self.single_plot_checkbox.get() == "on": self.single_plot = True
         else:                                       self.single_plot = False
@@ -74,6 +77,8 @@ class guiplot:
                 y = self.get_axis(self.yaxis[self.plots[plot]], length)
                 
                 if len(x) == 0 or len(y) == 0: continue
+                
+                if self.invert_x[self.active_plot] == "on": x = (-1)*x
 
                 # check if log scale is enabled
                 if self.log_scale[self.active_plot] == "on":
