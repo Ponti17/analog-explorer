@@ -21,6 +21,9 @@ class guiplot:
         return retval
     
     def parse_input(self):
+        # get active plot
+        self.active_plot = self.active_plot_dropdown.get()
+        
         # parse length input
         self.L[self.active_plot] = self.L_entry.get()
         if ':' in self.L[self.active_plot]:

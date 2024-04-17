@@ -30,11 +30,10 @@ class gui:
         self.axis_text.insert("0.0", "Plot:")
         self.axis_text.configure(state="disabled")
 
-        self.xaxis_dropdown = ctk.CTkComboBox(master=self.root,
-                                values=self.plots,
-                                command=self.set_active_plot)
-        self.xaxis_dropdown.place(relx=0.9,rely=0.08)
-        self.xaxis_dropdown.set("a")
+        self.active_plot_dropdown = ctk.CTkComboBox(master=self.root,
+                                values=self.plots)
+        self.active_plot_dropdown.place(relx=0.9,rely=0.08)
+        self.active_plot_dropdown.set("a")
                         
         # active model
         self.model_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
@@ -59,14 +58,12 @@ class gui:
         self.axis_text.configure(state="disabled")
 
         self.xaxis_dropdown = ctk.CTkComboBox(master=self.root,
-                                values=self.axis_variables,
-                                command=self.set_xaxis)
+                                values=self.axis_variables)
         self.xaxis_dropdown.place(relx=0.9,rely=0.18)
         self.xaxis_dropdown.set("vgs")
 
         self.yaxis_dropdown = ctk.CTkComboBox(master=self.root,
-                            values=self.axis_variables,
-                            command=self.set_yaxis)
+                            values=self.axis_variables)
         self.yaxis_dropdown.place(relx=0.9,rely=0.23)
         self.yaxis_dropdown.set("gmoverid")
         
