@@ -74,7 +74,6 @@ class guiplot:
             for k in range(len(self.L[self.active_plot])):
                 length = "{:.2e}".format(float(self.L[self.active_plot][k]) * 1e-6)
                 
-                print(self.active_model, self.model[self.plots[plot]])
                 # load model
                 if self.active_model != self.model[self.plots[plot]]:
                     self.load_model(self.model[self.plots[plot]])
