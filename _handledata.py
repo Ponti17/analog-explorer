@@ -20,7 +20,6 @@ class dataHandler:
             self.pmos = True
         else:
             self.pmos = False
-        print("Loading model... {}".format(filename))
         
         if self.dataformat == "csv":
             self.modelDF = pd.read_csv(filename)
@@ -29,7 +28,6 @@ class dataHandler:
         else:
             print("Unsupported data format.")
             exit()
-        print("Done.")
         
     def get_gmro(self, length):
         search_params = [self.vds[self.active_plot], length]
