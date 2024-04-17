@@ -6,6 +6,8 @@ class dataHandler:
         self.active_model = model
         if model == "nch":
             filename = ("nch_full_sim." + self.dataformat)
+        elif model == "nch_25":
+            filename = ("nch_25_full_sim." + self.dataformat)
         elif model == "pch":
             filename = ("pch_full_sim." + self.dataformat)
         elif model == "pch_25":
