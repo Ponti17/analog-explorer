@@ -45,6 +45,11 @@ class dataHandler:
             self.len_vals = list(set(self.len_vals))
             self.vds_vals.sort()
             self.len_vals.sort()
+        
+    def fit_vds_len(self, vds, length):
+        vds = self.vds_vals[min(range(len(self.vds_vals)), key = lambda i: abs(self.vds_vals[i]-vds))]
+        length = self.len_vals[min(range(len(self.len_vals)), key = lambda i: abs(self.len_vals[i]-length))]
+        return "{:.2e}".format(vds), "{:.2e}".format(length)
             
     def get_gmro(self, vds, length):
         search_params = [vds, length]

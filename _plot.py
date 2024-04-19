@@ -72,12 +72,14 @@ class guiplot:
         for axis in axs.reshape(-1):
             for i in range(len(self.L[self.active_plot])):
                 for j in range(len(self.vds[self.active_plot])):
-                    length = "{:.2e}".format(float(self.L[self.active_plot][i]) * 1e-6)
-                    vds = "{:.2e}".format(float(self.vds[self.active_plot][j]))
+                    length = float(self.L[self.active_plot][i]) * 1e-6
+                    vds = float(self.vds[self.active_plot][j])
                     
                     # load model
                     if self.active_model != self.model[self.plots[plot]]:
                         self.load_model(self.model[self.plots[plot]])
+                        
+                    vds, length = self.fit_vds_len(vds, length)
                     
                     # fetch x data
                     x = self.get_axis(self.xaxis[self.plots[plot]], vds, length)
