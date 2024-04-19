@@ -29,32 +29,32 @@ class dataHandler:
             print("Unsupported data format.")
             exit()
         
-    def get_gmro(self, length):
-        search_params = [self.vds[self.active_plot], length]
+    def get_gmro(self, vds, length):
+        search_params = [vds, length]
         data = []
         data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gm " in title])
         data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gds" in title])
         gmro = self.modelDF[data[0][1]] / self.modelDF[data[1][1]]
         return gmro
     
-    def get_idw(self, length):
-        search_params = [self.vds[self.active_plot], length, ":id"]
+    def get_idw(self, vds, length):
+        search_params = [vds, length, ":id"]
         data = [title for title in self.modelDF.columns if all(param in title for param in search_params)]
         retval = self.modelDF[data[1]]/(1e-6)
         if self.pmos:
             retval = -retval
         return retval
     
-    def get_ft(self, length):
-        search_params = [self.vds[self.active_plot], length]
+    def get_ft(self, vds, length):
+        search_params = [vds, length]
         data = []
         data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gm " in title])
         data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "cgg" in title])
         retval = self.modelDF[data[0][1]] / (2 * np.pi * self.modelDF[data[1][1]])
         return retval
     
-    def get_ft_gmoverid(self, length):
-        search_params = [self.vds[self.active_plot], length]
+    def get_ft_gmoverid(self, vds, length):
+        search_params = [vds, length]
         data = []
         data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gm " in title])
         data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "cgg" in title])
@@ -62,9 +62,10 @@ class dataHandler:
         retval = self.modelDF[data[0][1]] / (2 * np.pi * self.modelDF[data[1][1]]) * self.modelDF[data[2][1]]
         return retval
     
-    def get_simple(self, param, length):
+    def get_simple(self, param, vds, length):
         param = "M0:" + param
-        search_params = [self.vds[self.active_plot], length, param]
+        search_params = [vds, length, param]
         data = [title for title in self.modelDF.columns if all(param in title for param in search_params)]
+        print(data)
         retval = self.modelDF[data[1]]
         return retval

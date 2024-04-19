@@ -11,13 +11,13 @@ class guiplot:
         plt.savefig("plot.png")
     
     # returns requested data for axis
-    def get_axis(self, axis, length):
+    def get_axis(self, axis, vds, length):
         retval = []
-        if axis   == "gmro":        retval = self.get_gmro(length)
-        elif axis == "id/w":        retval = self.get_idw(length)
-        elif axis == "ft":          retval = self.get_ft(length)
-        elif axis == "ft*gmoverid": retval = self.get_ft_gmoverid(length)
-        elif axis != "":            retval = self.get_simple(axis, length)
+        if axis   == "gmro":        retval = self.get_gmro(vds, length)
+        elif axis == "id/w":        retval = self.get_idw(vds, length)
+        elif axis == "ft":          retval = self.get_ft(vds, length)
+        elif axis == "ft*gmoverid": retval = self.get_ft_gmoverid(vds, length)
+        elif axis != "":            retval = self.get_simple(axis, vds, length)
         return retval
     
     def parse_input(self):
@@ -32,7 +32,11 @@ class guiplot:
             self.L[self.active_plot] = [self.L[self.active_plot]]
         
         # parse vds input
-        self.vds[self.active_plot] = "{:.2e}".format(float(self.vds_entry.get()))
+        self.vds[self.active_plot] = self.vds_entry.get()
+        if ':' in self.vds[self.active_plot]:
+            self.vds[self.active_plot] = self.vds[self.active_plot].split(":")
+        else:
+            self.vds[self.active_plot] = [self.vds[self.active_plot]]
         
         # active model
         self.model[self.active_plot] = self.model_dropdown.get()
@@ -66,40 +70,46 @@ class guiplot:
         
         plot = 0
         for axis in axs.reshape(-1):
-            for k in range(len(self.L[self.active_plot])):
-                length = "{:.2e}".format(float(self.L[self.active_plot][k]) * 1e-6)
-                
-                # load model
-                if self.active_model != self.model[self.plots[plot]]:
-                    self.load_model(self.model[self.plots[plot]])
-                
-                # fetch x data
-                x = self.get_axis(self.xaxis[self.plots[plot]], length)
+            for i in range(len(self.L[self.active_plot])):
+                for j in range(len(self.vds[self.active_plot])):
+                    length = "{:.2e}".format(float(self.L[self.active_plot][i]) * 1e-6)
+                    vds = "{:.2e}".format(float(self.vds[self.active_plot][j]))
+                    
+                    # load model
+                    if self.active_model != self.model[self.plots[plot]]:
+                        self.load_model(self.model[self.plots[plot]])
+                    
+                    # fetch x data
+                    x = self.get_axis(self.xaxis[self.plots[plot]], vds, length)
 
-                # fetch y data
-                y = self.get_axis(self.yaxis[self.plots[plot]], length)
-                
-                if len(x) == 0 or len(y) == 0: continue
-                
-                if self.invert_x[self.active_plot] == "on": x = (-1)*x
+                    # fetch y data
+                    y = self.get_axis(self.yaxis[self.plots[plot]], vds, length)
+                    
+                    if len(x) == 0 or len(y) == 0: continue
+                    
+                    if self.invert_x[self.active_plot] == "on": x = (-1)*x
 
-                # check if log scale is enabled
-                if self.log_scale[self.active_plot] == "on":
-                    axis.set_xscale("log")
-                    locmaj = matplotlib.ticker.LogLocator(base=10,numticks=12) 
-                    axis.xaxis.set_major_locator(locmaj)
-                    locmin = matplotlib.ticker.LogLocator(base=10.0,subs=(0.2,0.4,0.6,0.8),numticks=12)
-                    axis.xaxis.set_minor_locator(locmin)
-                    axis.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
-                    axis.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
-                else:
-                    axis.ticklabel_format(axis='both', style='sci', scilimits=(0,0))
-                
-                # plot
-                if self.xaxis[self.plots[plot]] != "" and self.yaxis[self.plots[plot]] != "":
-                    axis.plot(x, y, label="L = {} m".format(length))
-                if self.legend_checkbox.get() == "on":
-                    axis.legend()
+                    # check if log scale is enabled
+                    if self.log_scale[self.active_plot] == "on":
+                        axis.set_xscale("log")
+                        locmaj = matplotlib.ticker.LogLocator(base=10,numticks=12) 
+                        axis.xaxis.set_major_locator(locmaj)
+                        locmin = matplotlib.ticker.LogLocator(base=10.0,subs=(0.2,0.4,0.6,0.8),numticks=12)
+                        axis.xaxis.set_minor_locator(locmin)
+                        axis.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
+                        axis.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
+                    else:
+                        axis.ticklabel_format(axis='both', style='sci', scilimits=(0,0))
+                    
+                    # plot
+                    if self.xaxis[self.plots[plot]] != "" and self.yaxis[self.plots[plot]] != "":
+                        length_title = length.split("e")[0]
+                        vds_title = np.round(float(vds.split("e")[0]) * 10 ** float(vds.split("e")[1]), 1)
+                        axis.plot(x, y, label="L = {0}u, vds = {1}V".format(length_title, vds_title))
+                    print(float(vds.split("e")[0]))
+                    print(float(vds.split("e")[1]))
+                    if self.legend_checkbox.get() == "on":
+                        axis.legend()
             axis.set_xlabel(self.xaxis[self.plots[plot]], loc="left")
             axis.set_ylabel(self.yaxis[self.plots[plot]])
             axis.set_title("{0}: {1} vs {2}".format(self.active_model, self.xaxis[self.plots[plot]], self.yaxis[self.plots[plot]]))
