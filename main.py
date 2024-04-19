@@ -1,16 +1,3 @@
-import pandas as pd
-import customtkinter as ctk
-
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import (
-    FigureCanvasTkAgg, NavigationToolbar2Tk)
-# Implement the default Matplotlib key bindings.
-from matplotlib.backend_bases import key_press_handler
-from matplotlib.figure import Figure
-import matplotlib.ticker
-
-import numpy as np
-
 from _ctkcore import ctk_core
 from _variables import py_designer_var
 from _guisetup import gui
