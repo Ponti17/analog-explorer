@@ -15,10 +15,6 @@ class gui:
                                         command=self.save)
         self.save_button.place(relx=0.8,rely=0.6)
         
-        self.load_button = ctk.CTkButton(master=self.root, text="Load Model", width=100, height=50,
-                                        command=self.load_model)
-        self.load_button.place(relx=0.8,rely=0.7)
-        
         self.quit_button = ctk.CTkButton(master=self.root, text="Quit", width=100, height=50,
                                         command=self.quit)
         self.quit_button.place(relx=0.9,rely=0.7)
