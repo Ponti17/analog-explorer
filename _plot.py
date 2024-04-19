@@ -106,8 +106,6 @@ class guiplot:
                         length_title = length.split("e")[0]
                         vds_title = np.round(float(vds.split("e")[0]) * 10 ** float(vds.split("e")[1]), 1)
                         axis.plot(x, y, label="L = {0}u, vds = {1}V".format(length_title, vds_title))
-                    print(float(vds.split("e")[0]))
-                    print(float(vds.split("e")[1]))
                     if self.legend_checkbox.get() == "on":
                         axis.legend()
             axis.set_xlabel(self.xaxis[self.plots[plot]], loc="left")

@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-class dataHandler:
+class dataHandler:    
     def load_model(self, model):
         self.active_model = model
         if model == "nch":
@@ -83,6 +83,5 @@ class dataHandler:
         param = "M0:" + param
         search_params = [vds, length, param]
         data = [title for title in self.modelDF.columns if all(param in title for param in search_params)]
-        print(data)
         retval = self.modelDF[data[1]]
         return retval
