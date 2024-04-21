@@ -9,15 +9,15 @@ class gui:
     def setup_buttons(self):
         self.button = ctk.CTkButton(master=self.root, text="Plot", width=100, height=50,
                                         command=self.new_plot)
-        self.button.place(relx=0.9,rely=0.6)
+        self.button.place(relx=0.9,rely=0.65)
         
         self.save_button = ctk.CTkButton(master=self.root, text="Save Fig", width=100, height=50,
                                         command=self.save)
-        self.save_button.place(relx=0.8,rely=0.6)
+        self.save_button.place(relx=0.9,rely=0.75)
         
         self.quit_button = ctk.CTkButton(master=self.root, text="Quit", width=100, height=50,
                                         command=self.quit)
-        self.quit_button.place(relx=0.9,rely=0.7)
+        self.quit_button.place(relx=0.9,rely=0.85)
         
     def setup_dropdowns(self):
         # active plot
@@ -116,3 +116,7 @@ class gui:
         # invert x axis, needed for pmos plots
         self.invert_x_checkbox = ctk.CTkCheckBox(master=self.root, text="Invert x", onvalue="on", offvalue="off")
         self.invert_x_checkbox.place(relx=0.9, rely=0.525)
+        
+        # gmoverid mode
+        self.invert_x_checkbox = ctk.CTkCheckBox(master=self.root, text="gm/ID Mode", onvalue="on", offvalue="off")
+        self.invert_x_checkbox.place(relx=0.9, rely=0.575)
