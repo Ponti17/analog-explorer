@@ -87,7 +87,7 @@ class guiplot:
                     # load model
                     if self.active_model != self.model[self.plots[plot]]:
                         self.load_model(self.model[self.plots[plot]])
-                        
+                    
                     vds, length = self.fit_vds_len(vds, length)
                     
                     # fetch x data
@@ -100,8 +100,7 @@ class guiplot:
                     
                     if self.gmoverid_mode:
                         gmoverid = float(self.gmid_entry.get())
-                        # self.get_gmoverid_mode(self.gmid_entry.get(), vds, length)
-                        
+                        self.get_gmoverid_mode(gmoverid, vds, length)
                         minx = x.iloc[1]
                         maxx = x.iloc[-1]
                         plt.hlines(gmoverid, minx, maxx, colors='r', linestyles='dashed')
