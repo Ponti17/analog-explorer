@@ -130,5 +130,5 @@ class gui:
         self.invert_x_checkbox.place(relx=0.9, rely=0.525)
         
         # gmoverid mode
-        self.invert_x_checkbox = ctk.CTkCheckBox(master=self.root, text="gm/ID Mode", onvalue="on", offvalue="off")
-        self.invert_x_checkbox.place(relx=0.9, rely=0.575)
+        self.gmoverid_checkbox = ctk.CTkCheckBox(master=self.root, text="gm/ID Mode", onvalue="on", offvalue="off")
+        self.gmoverid_checkbox.place(relx=0.9, rely=0.575)
