@@ -19,57 +19,56 @@ class gui:
                                         command=self.quit)
         self.quit_button.place(relx=0.9,rely=0.85)
         
-    def setup_dropdowns(self):
-        # active plot
+    def setup_textboxes(self):
         self.axis_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
         self.axis_text.place(relx=0.85, rely=0.075)
         self.axis_text.insert("0.0", "Plot:")
         self.axis_text.configure(state="disabled")
-
-        self.active_plot_dropdown = ctk.CTkComboBox(master=self.root,
-                                values=self.plots)
-        self.active_plot_dropdown.place(relx=0.9,rely=0.08)
-        self.active_plot_dropdown.set("a")
-                        
-        # active model
+        
         self.model_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
         self.model_text.place(relx=0.85, rely=0.125)
         self.model_text.insert("0.0", "Model:")
         self.model_text.configure(state="disabled")
-
-        self.model_dropdown = ctk.CTkComboBox(master=self.root,
-                                values=self.models)
-        self.model_dropdown.place(relx=0.9,rely=0.13)
-        self.model_dropdown.set("nch")
-
-        # axis dropdowns
+        
         self.axis_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
         self.axis_text.place(relx=0.85, rely=0.175)
         self.axis_text.insert("0.0", "X-axis")
         self.axis_text.configure(state="disabled")
-
+        
         self.axis_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
         self.axis_text.place(relx=0.85, rely=0.225)
         self.axis_text.insert("0.0", "Y-axis")
         self.axis_text.configure(state="disabled")
+        
+        self.L_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
+        self.L_text.place(relx=0.85, rely=0.275)
+        self.L_text.insert("0.0", "L (u):")
+        self.L_text.configure(state="disabled")
+        
+        self.vds_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
+        self.vds_text.place(relx=0.85, rely=0.325)
+        self.vds_text.insert("0.0", "VDS:")
+        self.vds_text.configure(state="disabled")
+        
+        
+    def setup_dropdowns(self):
+        self.active_plot_dropdown = ctk.CTkComboBox(master=self.root, values=self.plots)
+        self.active_plot_dropdown.place(relx=0.9,rely=0.08)
+        self.active_plot_dropdown.set("a")
 
-        self.xaxis_dropdown = ctk.CTkComboBox(master=self.root,
-                                values=self.axis_variables)
+        self.model_dropdown = ctk.CTkComboBox(master=self.root, values=self.models)
+        self.model_dropdown.place(relx=0.9,rely=0.13)
+        self.model_dropdown.set("nch")
+
+        self.xaxis_dropdown = ctk.CTkComboBox(master=self.root, values=self.axis_variables)
         self.xaxis_dropdown.place(relx=0.9,rely=0.18)
         self.xaxis_dropdown.set("vgs")
 
-        self.yaxis_dropdown = ctk.CTkComboBox(master=self.root,
-                            values=self.axis_variables)
+        self.yaxis_dropdown = ctk.CTkComboBox(master=self.root, values=self.axis_variables)
         self.yaxis_dropdown.place(relx=0.9,rely=0.23)
         self.yaxis_dropdown.set("gmoverid")
         
     def setup_entries(self):
-        # length
-        self.L_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
-        self.L_text.place(relx=0.85, rely=0.275)
-        self.L_text.insert("0.0", "L (u):")
-        self.L_text.configure(state="disabled") # READONLY after insert
-
         self.L_entry = ctk.CTkEntry(self.root, 
             placeholder_text="",
             height=30,
@@ -81,12 +80,6 @@ class gui:
             state="normal",
         )
         self.L_entry.place(relx=0.9,rely=0.28)
-        
-        # vds
-        self.vds_text = ctk.CTkTextbox(master=self.root, width=60, height=10, corner_radius=10)
-        self.vds_text.place(relx=0.85, rely=0.325)
-        self.vds_text.insert("0.0", "VDS:")
-        self.vds_text.configure(state="disabled") # READONLY after insert
 
         self.vds_entry = ctk.CTkEntry(self.root, 
             placeholder_text="",
