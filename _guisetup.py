@@ -50,6 +50,12 @@ class gui:
         self.vds_text.insert("0.0", "VDS:")
         self.vds_text.configure(state="disabled")
         
+        # For gm/ID mode
+        self.gmid_text = ctk.CTkTextbox(master=self.root, width=960, height=240, corner_radius=10)
+        self.gmid_text.place(relx=0.025, rely=0.675)
+        self.gmid_text.insert("0.0", "gm/ID:   {0}\n     vgs:   {1}\n  gmro:   {2}\n  vdsat:   {3}".format("0", "0", "0", "0"))
+        self.gmid_text.configure(state="disabled")
+        
         
     def setup_dropdowns(self):
         self.active_plot_dropdown = ctk.CTkComboBox(master=self.root, values=self.plots)
