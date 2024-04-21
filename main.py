@@ -11,6 +11,7 @@ class py_analog_designer(ctk_core, py_designer_var, gui, dataHandler, guiplot):
         self.init_ctk()
         self.setup_frame()
         self.setup_buttons()
+        self.setup_textboxes()
         self.setup_dropdowns()
         self.setup_entries()
         self.setup_checkboxes()
