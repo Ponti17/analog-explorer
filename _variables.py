@@ -24,7 +24,7 @@ class py_designer_var:
         # plot settings for each plot
         self.active_model = ""
         self.modelDF    = 0
-        self.gmoverid   = False
+        self.gmoverid_mode   = False
         self.yaxis      = {"a": "",
                            "b": "",
                            "c": "",

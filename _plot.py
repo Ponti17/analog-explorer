@@ -55,6 +55,15 @@ class guiplot:
         self.xaxis[self.active_plot] = self.xaxis_dropdown.get()
         self.yaxis[self.active_plot] = self.yaxis_dropdown.get()
         
+        # gmoverid mode
+        if self.gmoverid_checkbox.get() == "on": self.gmoverid_mode = True
+        else:                                    self.gmoverid_mode = False
+        
+        if self.gmoverid_mode:
+            self.yaxis[self.active_plot] = "gmoverid"
+            self.single_plot = True
+        
+        
     def plot(self):
         if self.single_plot:    plot_size = {"rows": 1, "columns": 1}
         else:                   plot_size = {"rows": 2, "columns": 2}
