@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 
 class dataHandler:    
     def load_model(self, model):
@@ -21,6 +22,7 @@ class dataHandler:
         else:
             self.pmos = False
         
+        filename = os.path.join(self.modeldir, filename)
         if self.dataformat == "csv":
             self.modelDF = pd.read_csv(filename)
         elif self.dataformat == "pkl":
