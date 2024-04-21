@@ -7,6 +7,7 @@ class ctk_core:
         self.x_scale = float(settings["RESX"]) / 1920.0
         self.y_scale = float(settings["RESY"]) / 1080.0
         self.dataformat = settings["DATAFORMAT"]
+        self.modeldir = settings["MODELDIR"]
         
     def init_ctk(self):
         ctk.set_appearance_mode("dark")

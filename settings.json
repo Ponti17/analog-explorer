@@ -1,5 +1,6 @@
 {
     "RESX": 1920,
     "RESY": 1080,
-    "DATAFORMAT": "pkl"
+    "DATAFORMAT": "pkl",
+    "MODELDIR": "models"
 }

@@ -4,7 +4,8 @@ class py_designer_var:
         self.len_vals = []
         self.x_scale = 1.0
         self.y_scale = 1.0
-        self.dataformat = "csv"
+        self.dataformat = ""
+        self.modeldir = ""
         self.pmos = True
         self.single_plot = False
         self.active_plot = "a"
