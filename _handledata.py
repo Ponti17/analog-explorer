@@ -17,10 +17,6 @@ class dataHandler:
             filename = ("pch_hvt_full_sim." + self.dataformat)
         elif model == "pch_lvt":
             filename = ("pch_lvt_full_sim." + self.dataformat)
-        if "pch" in model:
-            self.pmos = True
-        else:
-            self.pmos = False
         
         filename = os.path.join(self.modeldir, filename)
         if self.dataformat == "csv":
@@ -65,8 +61,6 @@ class dataHandler:
         search_params = [vds, length, ":id"]
         data = [title for title in self.modelDF.columns if all(param in title for param in search_params)]
         retval = self.modelDF[data[1]]/(1e-6)
-        if self.pmos:
-            retval = -retval
         return retval
     
     def get_ft(self, vds, length):

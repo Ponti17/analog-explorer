@@ -1,14 +1,30 @@
 class py_designer_var:
     def init_variables(self):
+        # stores possible values from model
         self.vds_vals = []
         self.len_vals = []
+        
+        # scales plot depending on resolution
         self.x_scale = 1.0
         self.y_scale = 1.0
+        
+        # stores app settings
         self.dataformat = ""
         self.modeldir = ""
-        self.pmos = True
+        
+        # stores plot settings
         self.single_plot = False
         self.active_plot = "a"
+        
+        # possible values for dropdowns
+        self.models         = ["nch", "nch_25", "pch", "pch_25", "pch_hvt", "pch_lvt"]
+        self.axis_variables = ["vgs", "gmoverid", "gmro", "id/w", "ft", "vdsat", "ft*gmoverid", "gm", "id "]
+        self.plots = ["a", "b", "c", "d"]
+        
+        # plot settings for each plot
+        self.active_model = ""
+        self.modelDF    = 0
+        self.gmoverid   = False
         self.yaxis      = {"a": "",
                            "b": "",
                            "c": "",
@@ -17,17 +33,10 @@ class py_designer_var:
                            "b": "",
                            "c": "",
                            "d": ""}
-        self.models = ["nch", "nch_25", "pch", "pch_25", "pch_hvt", "pch_lvt"]
-        self.axis_variables = ["vgs", "gmoverid", "gmro", "id/w", "ft", "vdsat", "ft*gmoverid", "gm", "id "]
-        self.plots = ["a", "b", "c", "d"]
-        
-        # user inputs
         self.model      = {"a": "nch",
                            "b": "nch",
                            "c": "nch",
                            "d": "nch"}
-        self.active_model = ""
-        self.modelDF    = 0
         self.vds        = {"a": "1",
                            "b": "1",
                            "c": "1",
@@ -48,3 +57,4 @@ class py_designer_var:
                            "b": "off",
                            "c": "off",
                            "d": "off"}
+        
