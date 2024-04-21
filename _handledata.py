@@ -9,6 +9,10 @@ class dataHandler:
             filename = ("nch_full_sim." + self.dataformat)
         elif model == "nch_25":
             filename = ("nch_25_full_sim." + self.dataformat)
+        elif model == "nch_hvt":
+            filename = ("nch_hvt_full_sim." + self.dataformat)
+        elif model == "nch_lvt":
+            filename = ("nch_lvt_full_sim." + self.dataformat)
         elif model == "pch":
             filename = ("pch_full_sim." + self.dataformat)
         elif model == "pch_25":
