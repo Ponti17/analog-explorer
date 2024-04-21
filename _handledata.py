@@ -36,7 +36,7 @@ class dataHandler:
         # find resolution of loaded model
         titles = []
         for title in self.modelDF.columns:
-            if "gds " in title and "X" in title:
+            if "gmoverid" in title and "X" in title:
                 titles.append(title)
         self.vds_vals = []
         self.len_vals = []
@@ -47,6 +47,22 @@ class dataHandler:
             self.len_vals = list(set(self.len_vals))
             self.vds_vals.sort()
             self.len_vals.sort()
+            
+    def get_gmoverid_mode(self, gmoverid, vds, length):
+        gmid_vals = self.get_axis("gmoverid", vds, length).tolist()
+        gmid_fit = gmid_vals[min(range(len(gmid_vals)), key = lambda i: abs(gmid_vals[i]-gmoverid))]
+        gmid_arg = gmid_vals.index(gmid_fit)
+        
+        params = ["vgs", "gmro", "vdsat"]
+        res = []
+        for param in params:
+            data = self.get_axis(param, vds, length).tolist()
+            res.append(data[gmid_arg])
+        self.gmid_text.configure(state="normal")
+        self.gmid_text.delete("0.0", "end")
+        self.gmid_text.insert("0.0", "gm/ID:   {0}\n     vgs:   {1}\n  gmro:   {2}\n  vdsat:   {3}".format(gmid_fit, res[0], res[1], res[2]))
+        self.gmid_text.configure(state="disabled")
+            
         
     def fit_vds_len(self, vds, length):
         # vds = self.vds_vals[min(range(len(self.vds_vals)), key = lambda i: abs(self.vds_vals[i]-vds))]
