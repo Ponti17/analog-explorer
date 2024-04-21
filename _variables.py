@@ -17,7 +17,7 @@ class py_designer_var:
         self.active_plot = "a"
         
         # possible values for dropdowns
-        self.models         = ["nch", "nch_25", "pch", "pch_25", "pch_hvt", "pch_lvt"]
+        self.models         = ["nch", "nch_25", "nch_hvt", "nch_lvt", "pch", "pch_25", "pch_hvt", "pch_lvt"]
         self.axis_variables = ["vgs", "gmoverid", "gmro", "id/w", "ft", "vdsat", "ft*gmoverid", "gm", "id "]
         self.plots = ["a", "b", "c", "d"]
         
