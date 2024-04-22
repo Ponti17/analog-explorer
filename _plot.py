@@ -106,10 +106,10 @@ class guiplot:
                         axis.hlines(gmoverid, minx, maxx, colors='r', linestyles='dashed')
                         
                     
-                    if self.invert_x[self.active_plot] == "on": x = (-1)*x
+                    if self.invert_x[self.plots[plot]] == "on": x = (-1)*x
 
                     # check if log scale is enabled
-                    if self.log_scale[self.active_plot] == "on":
+                    if self.log_scale[self.plots[plot]] == "on":
                         axis.set_xscale("log")
                         locmaj = matplotlib.ticker.LogLocator(base=10,numticks=12) 
                         axis.xaxis.set_major_locator(locmaj)
