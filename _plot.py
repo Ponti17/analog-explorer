@@ -74,6 +74,9 @@ class guiplot:
         if self.gmoverid_mode and "pch" in self.model_dropdown.get():
             for key, value in zip(self.invert_x.keys(), gmoverid_mode_invx):
                 self.invert_x[key] = value
+        if self.gmoverid_mode and "nch" in self.model_dropdown.get():
+            for key in self.invert_x:
+                self.invert_x[key] = "off"
             self.single_plot = False
 
             
