@@ -30,6 +30,7 @@ class dataHandler:
         else:
             print("Unsupported data format.")
             exit()
+            
         self.get_resolution()
         
     def get_resolution(self):
@@ -57,8 +58,7 @@ class dataHandler:
         res = []
         for param in params:
             data = self.get_axis(param, vds, length).tolist()
-            res.append(np.round(data[gmid_arg], 2))
-        res[4] = "{:.2e}".format(res[4])
+            res.append("{:.2e}".format(data[gmid_arg], 2))
         self.gmid_text.configure(state="normal")
         self.gmid_text.delete("0.0", "end")
         self.gmid_text.insert("0.0", "gm/ID:   {0}\n     vgs:   {1}\n  gmro:   {2}\n  vdsat:   {3}\n  id/w:   {4}\n    ft:   {5}".format(gmid_fit, res[0], res[1], res[2], res[3], res[4]))
