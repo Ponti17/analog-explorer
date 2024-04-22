@@ -59,11 +59,20 @@ class guiplot:
         if self.gmoverid_checkbox.get() == "on": self.gmoverid_mode = True
         else:                                    self.gmoverid_mode = False
         
+        gmoverid_mode_axis = ["vgs", "gmro", "id/w", "ft"]
+        gmoverid_mode_log = ["off", "off", "on", "off"]
         if self.gmoverid_mode:
-            self.yaxis[self.active_plot] = "gmoverid"
-            self.single_plot = True
+            for key in self.yaxis:
+                self.yaxis[key] = "gmoverid"
+            for key, value in zip(self.xaxis.keys(), gmoverid_mode_axis):
+                self.xaxis[key] = value
+            for key, value in zip(self.log_scale.keys(), gmoverid_mode_log):
+                self.log_scale[key] = value
+            for key in self.model:
+                self.model[key] = self.model_dropdown.get()
+            self.single_plot = False
+
             
-        
     def plot(self):
         if self.single_plot:    plot_size = {"rows": 1, "columns": 1}
         else:                   plot_size = {"rows": 2, "columns": 2}
