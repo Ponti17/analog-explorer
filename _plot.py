@@ -61,6 +61,7 @@ class guiplot:
         
         gmoverid_mode_axis = ["vgs", "gmro", "id/w", "ft"]
         gmoverid_mode_log = ["off", "off", "on", "off"]
+        gmoverid_mode_invx = ["on", "off", "on", "off"]
         if self.gmoverid_mode:
             for key in self.yaxis:
                 self.yaxis[key] = "gmoverid"
@@ -70,6 +71,9 @@ class guiplot:
                 self.log_scale[key] = value
             for key in self.model:
                 self.model[key] = self.model_dropdown.get()
+        if self.gmoverid_mode and "pch" in self.model_dropdown.get():
+            for key, value in zip(self.invert_x.keys(), gmoverid_mode_invx):
+                self.invert_x[key] = value
             self.single_plot = False
 
             
@@ -107,15 +111,14 @@ class guiplot:
                     
                     if len(x) == 0 or len(y) == 0: continue
                     
+                    if self.invert_x[self.plots[plot]] == "on": x = (-1)*x
+                    
                     if self.gmoverid_mode:
                         gmoverid = float(self.gmid_entry.get())
                         self.get_gmoverid_mode(gmoverid, vds, length)
                         minx = min(x.tolist())
                         maxx = max(x.tolist())
                         axis.hlines(gmoverid, minx, maxx, colors='r', linestyles='dashed')
-                        
-                    
-                    if self.invert_x[self.plots[plot]] == "on": x = (-1)*x
 
                     # check if log scale is enabled
                     if self.log_scale[self.plots[plot]] == "on":
