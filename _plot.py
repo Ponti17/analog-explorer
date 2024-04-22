@@ -101,9 +101,9 @@ class guiplot:
                     if self.gmoverid_mode:
                         gmoverid = float(self.gmid_entry.get())
                         self.get_gmoverid_mode(gmoverid, vds, length)
-                        minx = x.iloc[1]
-                        maxx = x.iloc[-1]
-                        plt.hlines(gmoverid, minx, maxx, colors='r', linestyles='dashed')
+                        minx = min(x.tolist())
+                        maxx = max(x.tolist())
+                        axis.hlines(gmoverid, minx, maxx, colors='r', linestyles='dashed')
                         
                     
                     if self.invert_x[self.active_plot] == "on": x = (-1)*x
