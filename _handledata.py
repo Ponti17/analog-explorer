@@ -53,14 +53,15 @@ class dataHandler:
         gmid_fit = gmid_vals[min(range(len(gmid_vals)), key = lambda i: abs(gmid_vals[i]-gmoverid))]
         gmid_arg = gmid_vals.index(gmid_fit)
         
-        params = ["vgs", "gmro", "vdsat", "id/w"]
+        params = ["vgs", "gmro", "vdsat", "id/w", "ft"]
         res = []
         for param in params:
             data = self.get_axis(param, vds, length).tolist()
-            res.append(data[gmid_arg])
+            res.append(np.round(data[gmid_arg], 2))
+        res[4] = "{:.2e}".format(res[4])
         self.gmid_text.configure(state="normal")
         self.gmid_text.delete("0.0", "end")
-        self.gmid_text.insert("0.0", "gm/ID:   {0}\n     vgs:   {1}\n  gmro:   {2}\n  vdsat:   {3}\n  id/w:   {4}".format(gmid_fit, res[0], res[1], res[2], res[3]))
+        self.gmid_text.insert("0.0", "gm/ID:   {0}\n     vgs:   {1}\n  gmro:   {2}\n  vdsat:   {3}\n  id/w:   {4}\n    ft:   {5}".format(gmid_fit, res[0], res[1], res[2], res[3], res[4]))
         self.gmid_text.configure(state="disabled")
             
         
