@@ -59,9 +59,11 @@ class dataHandler:
         for param in params:
             data = self.get_axis(param, vds, length).tolist()
             res.append("{:.2e}".format(data[gmid_arg], 2))
+        id = float(self.id_entry.get()) * 1e-9 / float(res[3])
+        id = "{:.2e}".format(id, 2)
         self.gmid_text.configure(state="normal")
         self.gmid_text.delete("0.0", "end")
-        self.gmid_text.insert("0.0", "gm/ID:   {0}\n     vgs:   {1}\n  gmro:   {2}\n  vdsat:   {3}\n  id/w:   {4}\n    ft:   {5}".format(gmid_fit, res[0], res[1], res[2], res[3], res[4]))
+        self.gmid_text.insert("0.0", "gm/ID:   {0}\n     vgs:   {1}\n  gmro:   {2}\n  vdsat:   {3}\n  id/w:   {4}\n    ft:   {5}\n     w:   {6}".format(gmid_fit, res[0], res[1], res[2], res[3], res[4], id))
         self.gmid_text.configure(state="disabled")
             
         
