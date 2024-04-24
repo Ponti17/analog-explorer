@@ -112,6 +112,18 @@ class gui:
         )
         self.gmid_entry.place(relx=0.65,rely=0.70)
         
+        self.id_entry = ctk.CTkEntry(self.root, 
+            placeholder_text="",
+            height=30,
+            width=130,
+            font=("Helvetica", 12),
+            corner_radius=10,
+            text_color="black",
+            fg_color=("darkblue","white"),  # outer, inner
+            state="normal",
+        )
+        self.id_entry.place(relx=0.65,rely=0.75)
+        
     def setup_checkboxes(self):
         # log scale
         self.log_scale_checkbox = ctk.CTkCheckBox(master=self.root, text="Log Scale", onvalue="on", offvalue="off")
