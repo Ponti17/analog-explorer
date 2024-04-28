@@ -31,7 +31,7 @@ class dataHandler:
             print("Unsupported data format.")
             exit()
             
-        self.get_resolution()
+        # self.get_resolution()
         
     def get_resolution(self):
         # find resolution of loaded model
