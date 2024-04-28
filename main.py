@@ -3,9 +3,15 @@ from _variables import py_designer_var
 from _guisetup import gui
 from _handledata import dataHandler
 from _plot import guiplot
+from _plota import plot
 
 class py_analog_designer(ctk_core, py_designer_var, gui, dataHandler, guiplot):
     def __init__(self):
+        # init plot objects
+        a = plot()
+        b = plot()
+        c = plot()
+        d = plot()
         self.init_variables()
         self.init()
         self.init_ctk()
