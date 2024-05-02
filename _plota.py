@@ -14,19 +14,44 @@ class plot:
         self.vdsrc: list[int] = [0] # vds input
         self.gateL: list[int] = [0] # gate length input
         
-    def getaxis(self, axis: str) -> np.ndarray:
-        retval = []
-        if axis   == "gmro":        retval = self.get_gmro(vds, length)
-        elif axis == "id/w":        retval = self.get_idw(vds, length)
-        elif axis == "ft":          retval = self.get_ft(vds, length)
-        elif axis == "ft*gmoverid": retval = self.get_ft_gmoverid(vds, length)
-        elif axis != "":            retval = self.get_simple(axis, vds, length)
-        return retval
+    def setx(self, x: str) -> None:
+        self.xaxis = x
         
-    def getx(self) -> np.ndarray:
-        retval = self.getaxis(self.xaxis)
-        return retval
+    def sety(self, y: str) -> None:
+        self.yaxis = y
+        
+    def setmodel(self, m: str) -> None:
+        self.model = m
     
-    def gety(self) -> np.ndarray:
-        retval = self.getaxis(self.yaxis)
-        return retval
+    def setlogx(self, logx: bool) -> None:
+        self.logx = logx
+        
+    def setinvx(self, invx: bool) -> None:
+        self.invx = invx
+        
+    def setvdsrc(self, v: list[int]) -> None:
+        self.vdsrc = v
+        
+    def setgateL(self, g: list[int]) -> None:
+        self.gateL = g
+        
+    def getx(self) -> str:
+        return self.xaxis
+    
+    def gety(self) -> str:
+        return self.yaxis
+    
+    def getmodel(self) -> str:
+        return self.model
+    
+    def getlogx(self) -> bool:
+        return self.logx
+    
+    def getinvx(self) -> bool:
+        return self.invx
+    
+    def getvdsrc(self) -> list[int]:
+        return self.vdsrc
+    
+    def getgateL(self) -> list[int]:
+        return self.gateL
