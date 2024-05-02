@@ -2,36 +2,28 @@ import pandas as pd
 import numpy as np
 import os
 
-class dataHandler:    
-    def load_model(self, model):
-        self.active_model = model
-        if model == "nch":
-            filename = ("nch_full_sim." + self.dataformat)
-        elif model == "nch_25":
-            filename = ("nch_25_full_sim." + self.dataformat)
-        elif model == "nch_hvt":
-            filename = ("nch_hvt_full_sim." + self.dataformat)
-        elif model == "nch_lvt":
-            filename = ("nch_lvt_full_sim." + self.dataformat)
-        elif model == "pch":
-            filename = ("pch_full_sim." + self.dataformat)
-        elif model == "pch_25":
-            filename = ("pch_25_full_sim." + self.dataformat)
-        elif model == "pch_hvt":
-            filename = ("pch_hvt_full_sim." + self.dataformat)
-        elif model == "pch_lvt":
-            filename = ("pch_lvt_full_sim." + self.dataformat)
+class dataHandler:
+    def __init__(self) -> None:
+        self.df = pd.DataFrame()
         
-        filename = os.path.join(self.modeldir, filename)
-        if self.dataformat == "csv":
-            self.modelDF = pd.read_csv(filename)
-        elif self.dataformat == "pkl":
-            self.modelDF = pd.read_pickle(filename)
-        else:
-            print("Unsupported data format.")
+    def load(self, model: str) -> None:
+        modeldir  =     "models"
+        modellist =    {"nch":        "nch_full_sim",
+                        "nch_25":     "nch_25_full_sim",
+                        "nch_hvt":    "nch_hvt_full_sim",
+                        "nch_lvt":    "nch_lvt_full_sim",
+                        "pch":        "pch_full_sim",
+                        "pch_25":     "pch_25_full_sim",
+                        "pch_hvt":    "pch_hvt_full_sim",
+                        "pch_lvt":    "pch_lvt_full_sim"}
+
+        try:
+            file = os.path.join(modeldir, modellist[model] + ".pkl")
+            self.df = pd.read_pickle(file)
+        except:
+            print("Invalid model or model not found: {}".format(model))
             exit()
-            
-        # self.get_resolution()
+
         
     def get_resolution(self):
         # find resolution of loaded model
