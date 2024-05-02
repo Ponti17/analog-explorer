@@ -24,7 +24,20 @@ class dataHandler:
             print("Invalid model or model not found: {}".format(model))
             exit()
 
-        
+    def getAxis(self, ax: str, vdsrc: int, gateL: int) -> pd.DataFrame:
+        match ax:
+            case "gmro":
+                return self.__gmro(vdsrc, gateL)
+            case _:
+                return self.__get_simple(ax, vdsrc, gateL)
+    
+    def __get_simple(self, ax: str, vdsrc: int, gateL: int) -> pd.DataFrame:
+        param = "M0:" + ax
+        search_params = [vdsrc, gateL, gateL]
+        data = [title for title in self.modelDF.columns if all(param in title for param in search_params)]
+        retval = self.modelDF[data[1]]
+        return retval
+    
     def get_resolution(self):
         # find resolution of loaded model
         titles = []
@@ -64,7 +77,7 @@ class dataHandler:
         # length = self.len_vals[min(range(len(self.len_vals)), key = lambda i: abs(self.len_vals[i]-length))]
         return "{:.2e}".format(vds), "{:.2e}".format(length)
             
-    def get_gmro(self, vds, length):
+    def __gmro(self, vds, length):
         search_params = [vds, length]
         data = []
         data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gm " in title])
@@ -93,11 +106,4 @@ class dataHandler:
         data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "cgg" in title])
         data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gmoverid" in title])
         retval = self.modelDF[data[0][1]] / (2 * np.pi * self.modelDF[data[1][1]]) * self.modelDF[data[2][1]]
-        return retval
-    
-    def get_simple(self, param, vds, length):
-        param = "M0:" + param
-        search_params = [vds, length, param]
-        data = [title for title in self.modelDF.columns if all(param in title for param in search_params)]
-        retval = self.modelDF[data[1]]
         return retval
