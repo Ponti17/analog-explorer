@@ -29,6 +29,8 @@ class DataHandler:
         match ax:
             case "gmro":
                 return self.__get_gmro(vdsrc, gateL)
+            case "id/w":
+                return self.__get_idw(vdsrc, gateL)
             case _:
                 return self.__get_simple(ax, vdsrc, gateL)
     
@@ -40,7 +42,11 @@ class DataHandler:
         gm:  npt.NDArray[np.float32] = self.__get_simple("gm ", vdsrc, gateL)
         gds: npt.NDArray[np.float32] = self.__get_simple("gds", vdsrc, gateL)
         return gm / gds
-
+    
+    def __get_idw(self, vdsrc: str, gateL: str) -> npt.NDArray[np.float32]:
+        id: npt.NDArray[np.float32] = self.__get_simple("id ", vdsrc, gateL)
+        return id / 1e-6
+    
     def get_resolution(self):
         # find resolution of loaded model
         titles = []
@@ -80,13 +86,6 @@ class DataHandler:
         # length = self.len_vals[min(range(len(self.len_vals)), key = lambda i: abs(self.len_vals[i]-length))]
         return "{:.2e}".format(vds), "{:.2e}".format(length)
             
-    
-    def get_idw(self, vds, length):
-        search_params = [vds, length, ":id"]
-        data = [title for title in self.modelDF.columns if all(param in title for param in search_params)]
-        retval = self.modelDF[data[1]]/(1e-6)
-        return retval
-    
     def get_ft(self, vds, length):
         search_params = [vds, length]
         data = []
