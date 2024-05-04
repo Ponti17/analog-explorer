@@ -1,4 +1,4 @@
-class plot:
+class Plot:
     def __init__(self) -> None:
         self.reset()
         
