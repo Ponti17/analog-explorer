@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import numpy.typing as npt
 import os
 
 class DataHandler:
@@ -24,29 +25,21 @@ class DataHandler:
             print("Invalid model or model not found: {}".format(model))
             exit()
 
-    def getAxis(self, ax: str, vdsrc: str, gateL: str) -> np.ndarray:
+    def getAxis(self, ax: str, vdsrc: str, gateL: str) -> npt.NDArray[np.float32]:
         match ax:
             case "gmro":
                 return self.__get_gmro(vdsrc, gateL)
             case _:
                 return self.__get_simple(ax, vdsrc, gateL)
     
-    def __get_simple(self, ax: str, vdsrc: str, gateL: str) -> np.ndarray:
+    def __get_simple(self, ax: str, vdsrc: str, gateL: str) -> npt.NDArray[np.float32]:
         regex_str: str = "(?=.*{})(?=.*vds={})(?=.*length={})(?=.*Y)".format(ax, vdsrc, gateL).replace("+", "\\+")
         return self.df.filter(regex=regex_str).to_numpy()
     
-    def __get_gmro(self, vdsrc: str, gateL: str) -> np.ndarray:
-        gm:  np.ndarray = self.__get_simple("gm ", vdsrc, gateL)
-        gds: np.ndarray = self.__get_simple("gds", vdsrc, gateL)
+    def __get_gmro(self, vdsrc: str, gateL: str) -> npt.NDArray[np.float32]:
+        gm:  npt.NDArray[np.float32] = self.__get_simple("gm ", vdsrc, gateL)
+        gds: npt.NDArray[np.float32] = self.__get_simple("gds", vdsrc, gateL)
         return gm / gds
-    
-    def __gmro(self, vds, length):
-        search_params = [vds, length]
-        data = []
-        data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gm " in title])
-        data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gds" in title])
-        gmro = self.modelDF[data[0][1]] / self.modelDF[data[1][1]]
-        return gmro
 
     def get_resolution(self):
         # find resolution of loaded model
