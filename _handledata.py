@@ -70,9 +70,3 @@ class DataHandler:
         self.gmid_text.delete("0.0", "end")
         self.gmid_text.insert("0.0", "gm/ID:   {0}\n     vgs:   {1}\n  gmro:   {2}\n  vdsat:   {3}\n  id/w:   {4}\n    ft:   {5}\n     w:   {6}".format(gmid_fit, res[0], res[1], res[2], res[3], res[4], id))
         self.gmid_text.configure(state="disabled")
-            
-        
-    def fit_vds_len(self, vds, length):
-        # vds = self.vds_vals[min(range(len(self.vds_vals)), key = lambda i: abs(self.vds_vals[i]-vds))]
-        # length = self.len_vals[min(range(len(self.len_vals)), key = lambda i: abs(self.len_vals[i]-length))]
-        return "{:.2e}".format(vds), "{:.2e}".format(length)
