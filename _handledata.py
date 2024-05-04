@@ -92,13 +92,3 @@ class DataHandler:
         # vds = self.vds_vals[min(range(len(self.vds_vals)), key = lambda i: abs(self.vds_vals[i]-vds))]
         # length = self.len_vals[min(range(len(self.len_vals)), key = lambda i: abs(self.len_vals[i]-length))]
         return "{:.2e}".format(vds), "{:.2e}".format(length)
-            
-    
-    def get_ft_gmoverid(self, vds, length):
-        search_params = [vds, length]
-        data = []
-        data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gm " in title])
-        data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "cgg" in title])
-        data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gmoverid" in title])
-        retval = self.modelDF[data[0][1]] / (2 * np.pi * self.modelDF[data[1][1]]) * self.modelDF[data[2][1]]
-        return retval
