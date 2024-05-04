@@ -24,17 +24,17 @@ class dataHandler:
             print("Invalid model or model not found: {}".format(model))
             exit()
 
-    def getAxis(self, ax: str, vdsrc: int, gateL: int) -> pd.DataFrame:
+    def getAxis(self, ax: str, vdsrc: str, gateL: str) -> pd.DataFrame:
         match ax:
             case "gmro":
                 return self.__gmro(vdsrc, gateL)
             case _:
                 return self.__get_simple(ax, vdsrc, gateL)
     
-    def __get_simple(self, ax: str, vdsrc: int, gateL: int) -> pd.DataFrame:
+    def __get_simple(self, ax: str, vdsrc: str, gateL: str) -> pd.DataFrame:
         param = "M0:" + ax
         search_params = [vdsrc, gateL, gateL]
-        data = [title for title in self.modelDF.columns if all(param in title for param in search_params)]
+        data = [title for title in self.df.columns if all(param in title for param in search_params)]
         retval = self.modelDF[data[1]]
         return retval
     

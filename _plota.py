@@ -1,5 +1,3 @@
-import numpy as np
-
 class plot:
     def __init__(self) -> None:
         self.reset()
@@ -11,8 +9,8 @@ class plot:
         self.logx: bool = False
         self.invx: bool = False
         
-        self.vdsrc: list[int] = [0] # vds input
-        self.gateL: list[int] = [0] # gate length input
+        self.vdsrc: list[str] = [""] # vds input
+        self.gateL: list[str] = [""] # gate length input
         
     def setx(self, x: str) -> None:
         self.xaxis = x
@@ -29,10 +27,10 @@ class plot:
     def setinvx(self, invx: bool) -> None:
         self.invx = invx
         
-    def setvdsrc(self, v: list[int]) -> None:
+    def setvdsrc(self, v: list[str]) -> None:
         self.vdsrc = v
         
-    def setgateL(self, g: list[int]) -> None:
+    def setgateL(self, g: list[str]) -> None:
         self.gateL = g
         
     def getx(self) -> str:
@@ -50,8 +48,8 @@ class plot:
     def getinvx(self) -> bool:
         return self.invx
     
-    def getvdsrc(self) -> list[int]:
+    def getvdsrc(self) -> list[str]:
         return self.vdsrc
     
-    def getgateL(self) -> list[int]:
+    def getgateL(self) -> list[str]:
         return self.gateL
