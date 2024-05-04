@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 
-class dataHandler:
+class DataHandler:
     def __init__(self) -> None:
         self.df = pd.DataFrame()
         
