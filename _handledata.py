@@ -4,7 +4,7 @@ import os
 
 class DataHandler:
     def __init__(self) -> None:
-        self.df = pd.DataFrame()
+        self.df: pd.DataFrame = pd.DataFrame()
         
     def load(self, model: str) -> None:
         modeldir  =     "models"
@@ -24,17 +24,30 @@ class DataHandler:
             print("Invalid model or model not found: {}".format(model))
             exit()
 
-    def getAxis(self, ax: str, vdsrc: str, gateL: str) -> pd.DataFrame:
+    def getAxis(self, ax: str, vdsrc: str, gateL: str) -> np.ndarray:
         match ax:
             case "gmro":
-                return self.__gmro(vdsrc, gateL)
+                return self.__get_gmro(vdsrc, gateL)
             case _:
                 return self.__get_simple(ax, vdsrc, gateL)
     
-    def __get_simple(self, ax: str, vdsrc: str, gateL: str) -> pd.DataFrame:
-        regex_str = "(?=.*{})(?=.*vds={})(?=.*length={})(?=.*Y)".format(ax, vdsrc, gateL).replace("+", "\\+")
-        return self.df.filter(regex=regex_str)
+    def __get_simple(self, ax: str, vdsrc: str, gateL: str) -> np.ndarray:
+        regex_str: str = "(?=.*{})(?=.*vds={})(?=.*length={})(?=.*Y)".format(ax, vdsrc, gateL).replace("+", "\\+")
+        return self.df.filter(regex=regex_str).to_numpy()
     
+    def __get_gmro(self, vdsrc: str, gateL: str) -> np.ndarray:
+        gm:  np.ndarray = self.__get_simple("gm ", vdsrc, gateL)
+        gds: np.ndarray = self.__get_simple("gds", vdsrc, gateL)
+        return gm / gds
+    
+    def __gmro(self, vds, length):
+        search_params = [vds, length]
+        data = []
+        data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gm " in title])
+        data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gds" in title])
+        gmro = self.modelDF[data[0][1]] / self.modelDF[data[1][1]]
+        return gmro
+
     def get_resolution(self):
         # find resolution of loaded model
         titles = []
@@ -74,13 +87,6 @@ class DataHandler:
         # length = self.len_vals[min(range(len(self.len_vals)), key = lambda i: abs(self.len_vals[i]-length))]
         return "{:.2e}".format(vds), "{:.2e}".format(length)
             
-    def __gmro(self, vds, length):
-        search_params = [vds, length]
-        data = []
-        data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gm " in title])
-        data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gds" in title])
-        gmro = self.modelDF[data[0][1]] / self.modelDF[data[1][1]]
-        return gmro
     
     def get_idw(self, vds, length):
         search_params = [vds, length, ":id"]
