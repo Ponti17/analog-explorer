@@ -31,6 +31,8 @@ class DataHandler:
                 return self.__get_gmro(vdsrc, gateL)
             case "id/w":
                 return self.__get_idw(vdsrc, gateL)
+            case "ft":
+                return self.__get_ft(vdsrc, gateL)
             case _:
                 return self.__get_simple(ax, vdsrc, gateL)
     
@@ -46,6 +48,11 @@ class DataHandler:
     def __get_idw(self, vdsrc: str, gateL: str) -> npt.NDArray[np.float32]:
         id: npt.NDArray[np.float32] = self.__get_simple("id ", vdsrc, gateL)
         return id / 1e-6
+    
+    def __get_ft(self, vdsrc: str, gateL: str) -> npt.NDArray[np.float32]:
+        gm:  npt.NDArray[np.float32] = self.__get_simple("gm ", vdsrc, gateL)
+        cgg: npt.NDArray[np.float32] = self.__get_simple("cgg ", vdsrc, gateL)
+        return gm / (2 * np.pi * cgg)
     
     def get_resolution(self):
         # find resolution of loaded model
@@ -86,13 +93,6 @@ class DataHandler:
         # length = self.len_vals[min(range(len(self.len_vals)), key = lambda i: abs(self.len_vals[i]-length))]
         return "{:.2e}".format(vds), "{:.2e}".format(length)
             
-    def get_ft(self, vds, length):
-        search_params = [vds, length]
-        data = []
-        data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "gm " in title])
-        data.append([title for title in self.modelDF.columns if all(param in title for param in search_params) and "cgg" in title])
-        retval = self.modelDF[data[0][1]] / (2 * np.pi * self.modelDF[data[1][1]])
-        return retval
     
     def get_ft_gmoverid(self, vds, length):
         search_params = [vds, length]
