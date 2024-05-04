@@ -53,22 +53,6 @@ class DataHandler:
         gm:  npt.NDArray[np.float32] = self.__get_simple("gm ", vdsrc, gateL)
         cgg: npt.NDArray[np.float32] = self.__get_simple("cgg ", vdsrc, gateL)
         return gm / (2 * np.pi * cgg)
-    
-    def get_resolution(self):
-        # find resolution of loaded model
-        titles = []
-        for title in self.modelDF.columns:
-            if "gmoverid" in title and "X" in title:
-                titles.append(title)
-        self.vds_vals = []
-        self.len_vals = []
-        for title in titles:
-            self.vds_vals.append(float(title.split(',')[0].split('=')[1]))
-            self.len_vals.append(float(title.split(',')[1].split('=')[1].split(')')[0]))
-            self.vds_vals = list(set(self.vds_vals))
-            self.len_vals = list(set(self.len_vals))
-            self.vds_vals.sort()
-            self.len_vals.sort()
             
     def get_gmoverid_mode(self, gmoverid, vds, length):
         gmid_vals = self.get_axis("gmoverid", vds, length).tolist()
