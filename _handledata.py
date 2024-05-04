@@ -32,11 +32,8 @@ class DataHandler:
                 return self.__get_simple(ax, vdsrc, gateL)
     
     def __get_simple(self, ax: str, vdsrc: str, gateL: str) -> pd.DataFrame:
-        param = "M0:" + ax
-        search_params = [vdsrc, gateL, gateL]
-        data = [title for title in self.df.columns if all(param in title for param in search_params)]
-        retval = self.modelDF[data[1]]
-        return retval
+        regex_str = "(?=.*{})(?=.*vds={})(?=.*length={})(?=.*Y)".format(ax, vdsrc, gateL).replace("+", "\\+")
+        return self.df.filter(regex=regex_str)
     
     def get_resolution(self):
         # find resolution of loaded model
