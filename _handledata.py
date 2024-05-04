@@ -33,7 +33,7 @@ class DataHandler:
                 return self.__get_simple(ax, vdsrc, gateL)
     
     def __get_simple(self, ax: str, vdsrc: str, gateL: str) -> npt.NDArray[np.float32]:
-        regex_str: str = "(?=.*{})(?=.*vds={})(?=.*length={})(?=.*Y)".format(ax, vdsrc, gateL).replace("+", "\\+")
+        regex_str: str = "(?=.*M0:{})(?=.*vds={})(?=.*length={})(?=.*Y)".format(ax, vdsrc, gateL).replace("+", "\\+")
         return self.df.filter(regex=regex_str).to_numpy()
     
     def __get_gmro(self, vdsrc: str, gateL: str) -> npt.NDArray[np.float32]:
