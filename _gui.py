@@ -1,7 +1,13 @@
 import tkinter as tk
 from tkinter import StringVar
 import json
+
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.animation as animation
+
+import numpy as np
 
 class Gui:
     def __init__(self) -> None:
@@ -15,10 +21,21 @@ class Gui:
         self.__setup_entries()
         self.__setup_dropdowns()
         self.__setup_checkboxes()
+        self.plot()
         self.__run_tk()
         
     def quit(self) -> None:
         self.root.quit()
+
+        
+    def plot(self) -> None:
+        fig = Figure(figsize=(5, 4), dpi=100)
+        t = np.arange(0, 3, .01)
+        fig.add_subplot(111).plot(t, 2 * np.sin(2 * np.pi * t))
+
+        canvas = FigureCanvasTkAgg(fig, master=self.root)
+        canvas.draw()
+        canvas.get_tk_widget().grid(row=0, column=0, rowspan=80, columnspan=120, pady=10, padx=10, sticky="NSEW")
         
     def __init_tk(self) -> None:
         self.root = tk.Tk()
@@ -33,7 +50,7 @@ class Gui:
         self.figure_frame.grid(row=0, column=0, rowspan=80, columnspan=120, pady=10, padx=10)
         
     def __setup_buttons(self) -> None:
-        self.plot_btn = tk.Button(master=self.root, width=10, height=1, text="Plot")
+        self.plot_btn = tk.Button(master=self.root, width=10, height=1, text="Plot", command=self.plot)
         self.plot_btn.grid(row=76, column=120, pady=1, padx=1)
         
         self.save_btn = tk.Button(master=self.root, width=10, height=1, text="Save Figure")
