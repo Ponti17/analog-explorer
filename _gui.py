@@ -11,9 +11,10 @@ import numpy as np
 
 class Gui:
     def __init__(self) -> None:
-        settings = json.load(open("settings.json", "r"))
-        self.xscale = float(settings["RESX"]) / 1920.0
-        self.yscale = float(settings["RESY"]) / 1080.0 
+        # settings = json.load(open("settings.json", "r"))
+        # self.xscale = float(settings["RESX"]) / 1920.0
+        # self.yscale = float(settings["RESY"]) / 1080.0 
+        self.__reset_vars()
         self.__init_tk()
         self.__setup_frame()
         self.__setup_buttons()
@@ -23,6 +24,15 @@ class Gui:
         self.__setup_checkboxes()
         self.plot()
         self.__run_tk()
+        
+    def __reset_vars(self) -> None:
+        self.gateL:  dict[str, str] = {"a": "", "b": "", "c": "", "d": ""}
+        self.vdsrc:  dict[str, str] = {"a": "", "b": "", "c": "", "d": ""}
+        self.models: dict[str, str] = {"a": "", "b": "", "c": "", "d": ""}
+        self.x_axis: dict[str, str] = {"a": "", "b": "", "c": "", "d": ""}
+        self.y_axis: dict[str, str] = {"a": "", "b": "", "c": "", "d": ""}
+        self.logx:   dict[str, int]      = {"a": 0, "b": 0, "c": 0, "d": 0}
+        self.show_legend: dict[str, int] = {"a": 0, "b": 0, "c": 0, "d": 0}
         
     def quit(self) -> None:
         self.root.quit()
