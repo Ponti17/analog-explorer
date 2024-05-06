@@ -1,20 +1,15 @@
 import tkinter as tk
-from tkinter import StringVar
-import json
-
 import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import matplotlib.animation as animation
-
 import numpy as np
+from tkinter import StringVar
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from _plota import Plot
 
 class Gui:
     def __init__(self) -> None:
         # settings = json.load(open("settings.json", "r"))
         # self.xscale = float(settings["RESX"]) / 1920.0
         # self.yscale = float(settings["RESY"]) / 1080.0 
-        self.__reset_vars()
         self.__init_tk()
         self.__setup_frame()
         self.__setup_buttons()
@@ -22,22 +17,49 @@ class Gui:
         self.__setup_entries()
         self.__setup_dropdowns()
         self.__setup_checkboxes()
-        self.plot()
+        self.__init_objects()
+        
+        # self.plot()
         self.__run_tk()
         
-    def __reset_vars(self) -> None:
-        self.gateL:  dict[str, str] = {"a": "", "b": "", "c": "", "d": ""}
-        self.vdsrc:  dict[str, str] = {"a": "", "b": "", "c": "", "d": ""}
-        self.models: dict[str, str] = {"a": "", "b": "", "c": "", "d": ""}
-        self.x_axis: dict[str, str] = {"a": "", "b": "", "c": "", "d": ""}
-        self.y_axis: dict[str, str] = {"a": "", "b": "", "c": "", "d": ""}
-        self.logx:   dict[str, int]      = {"a": 0, "b": 0, "c": 0, "d": 0}
-        self.show_legend: dict[str, int] = {"a": 0, "b": 0, "c": 0, "d": 0}
+    def __init_objects(self) -> None:
+        self.a = Plot()
+        self.b = Plot()
+        self.c = Plot()
+        self.d = Plot()
+        self.plots = {
+            "a": self.a,
+            "b": self.b,
+            "c": self.c,
+            "d": self.d
+        }
+        
+    def __update_gui(self, _: StringVar) -> None:
+        self.__update_dropdowns()
+        
+    def __update_dropdowns(self) -> None:
+        plot = self.get_entry("selected_plot")
+        self.selected_model.set(self.plots[plot].getmodel())
+        self.selected_x.set(self.plots[plot].getx())
+        self.selected_y.set(self.plots[plot].gety())
+        
+    def __update_vars(self, _: StringVar) -> None:
+        self.__update_objects()
+        
+    def __update_objects(self) -> None:
+        plot = self.get_entry("selected_plot")
+        self.plots[plot].setgateL(self.get_entry("gateL"))
+        self.plots[plot].setvdsrc(self.get_entry("vdsrc"))
+        self.plots[plot].setmodel(self.get_entry("selected_model"))
+        self.plots[plot].setx(self.get_entry("selected_x"))
+        self.plots[plot].sety(self.get_entry("selected_y"))
+        self.plots[plot].setlogx(self.get_checkbox("logx"))
         
     def quit(self) -> None:
         self.root.quit()
         
     def plot(self) -> None:
+        return
         fig, axs = plt.subplots(nrows=1, ncols=1, figsize=(5,4), dpi=100)
         t = np.arange(0, 3, .01)
         fig.add_subplot().plot(t, 2 * np.sin(2 * np.pi * t))
@@ -66,11 +88,11 @@ class Gui:
     def get_checkbox(self, checkbox: str) -> int:
         match checkbox:
             case "logx":
-                return self.logx.get()
+                return self.logx_var.get()
             case "single_plot":
-                return self.single_plot.get()
+                return self.single_plot_var.get()
             case "show_legend":
-                return self.show_legend.get()
+                return self.show_legend_var.get()
             case "gmoverid_mode":
                 return self.gmoverid_mode.get()
             case _:
@@ -122,22 +144,22 @@ class Gui:
 
         self.selected_plot = StringVar(self.root)
         self.selected_plot.set(menus["plots"][0])
-        plot_menu = tk.OptionMenu(self.root, self.selected_plot, *menus["plots"])
+        plot_menu = tk.OptionMenu(self.root, self.selected_plot, *menus["plots"], command=self.__update_gui)
         plot_menu.grid(row=10, column=121, pady=2, padx=(2, 10), sticky="ew")
         
         self.selected_model = StringVar(self.root)
         self.selected_model.set(menus["models"][0])
-        x_menu = tk.OptionMenu(self.root, self.selected_model, *menus["models"])
+        x_menu = tk.OptionMenu(self.root, self.selected_model, *menus["models"], command=self.__update_vars)
         x_menu.grid(row=11, column=121, pady=2, padx=(2, 10), sticky="ew")
         
         self.selected_x = StringVar(self.root)
         self.selected_x.set(menus["axis"][3])
-        x_menu = tk.OptionMenu(self.root, self.selected_x, *menus["axis"])
+        x_menu = tk.OptionMenu(self.root, self.selected_x, *menus["axis"], command=self.__update_vars)
         x_menu.grid(row=12, column=121, pady=2, padx=(2, 10), sticky="ew")
         
         self.selected_y = StringVar(self.root)
         self.selected_y.set(menus["axis"][1])
-        x_menu = tk.OptionMenu(self.root, self.selected_y, *menus["axis"])
+        x_menu = tk.OptionMenu(self.root, self.selected_y, *menus["axis"], command=self.__update_vars)
         x_menu.grid(row=13, column=121, pady=2, padx=(2, 10), sticky="ew")
 
     def __setup_entries(self)  -> None:
@@ -148,16 +170,16 @@ class Gui:
         self.vdsrc_entry.grid(row=15, column=121, pady=2, padx=(2, 10))
         
     def __setup_checkboxes(self)  -> None:
-        self.logx       = tk.IntVar()
-        log_btn         = tk.Checkbutton(self.root, onvalue=1, offvalue=0, width=10, anchor="w", variable=self.logx, text="Log Scale")
+        self.logx_var       = tk.IntVar()
+        log_btn         = tk.Checkbutton(self.root, onvalue=1, offvalue=0, width=10, anchor="w", variable=self.logx_var, text="Log Scale")
         log_btn.grid(row=16, column=121, pady=2, padx=(2, 10))
         
-        self.single_plot= tk.IntVar()
-        single_plot_btn = tk.Checkbutton(self.root, onvalue=1, offvalue=0, width=10, anchor="w", variable=self.single_plot, text="Single Plot")
+        self.single_plot_var= tk.IntVar()
+        single_plot_btn = tk.Checkbutton(self.root, onvalue=1, offvalue=0, width=10, anchor="w", variable=self.single_plot_var, text="Single Plot")
         single_plot_btn.grid(row=17, column=121, pady=2, padx=(2, 10))
         
-        self.show_legend= tk.IntVar()
-        show_legend_btn = tk.Checkbutton(self.root, onvalue=1, offvalue=0, width=10, anchor="w", variable=self.show_legend, text="Show Legend")
+        self.show_legend_var= tk.IntVar()
+        show_legend_btn = tk.Checkbutton(self.root, onvalue=1, offvalue=0, width=10, anchor="w", variable=self.show_legend_var, text="Show Legend")
         show_legend_btn.grid(row=18, column=121, pady=2, padx=(2, 10))
         
         self.gmoverid_mode = tk.IntVar()
