@@ -4,6 +4,7 @@ import numpy as np
 from tkinter import StringVar
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from _plota import Plot
+from _handledata import DataHandler
 
 class Gui:
     def __init__(self) -> None:
@@ -23,6 +24,8 @@ class Gui:
         self.__run_tk()
         
     def __init_objects(self) -> None:
+        self.reader = DataHandler()
+        
         self.a = Plot()
         self.b = Plot()
         self.c = Plot()
@@ -58,11 +61,24 @@ class Gui:
     def quit(self) -> None:
         self.root.quit()
         
+    def debug(self) -> None:
+        for plot in self.plots.values():
+            print(plot.getmodel())
+            print(plot.getx())
+            print(plot.gety())
+            print(plot.getgateL())
+            print(plot.getvdsrc())
+            print(plot.getlogx())
+        
     def plot(self) -> None:
-        return
-        fig, axs = plt.subplots(nrows=1, ncols=1, figsize=(5,4), dpi=100)
-        t = np.arange(0, 3, .01)
-        fig.add_subplot().plot(t, 2 * np.sin(2 * np.pi * t))
+        self.__update_objects()
+        fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(5,4), dpi=100)
+        ax_a, ax_b, ax_c, ax_d = axs.flatten()
+        
+        for plot in self.plots.values():
+            if plot.getmodel() != self.reader.get_loaded():
+                self.reader.load(plot.getmodel())
+            ax_a.plot(self.reader.getAxis(plot.getx(), plot.getvdsrc(), plot.getgateL()), self.reader.getAxis(plot.gety(), plot.getvdsrc(), plot.getgateL()))
         
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
@@ -114,7 +130,7 @@ class Gui:
         plot_btn = tk.Button(master=self.root, width=10, height=1, text="Plot", command=self.plot)
         plot_btn.grid(row=76, column=120, pady=1, padx=1)
         
-        save_btn = tk.Button(master=self.root, width=10, height=1, text="Save Figure")
+        save_btn = tk.Button(master=self.root, width=10, height=1, text="Save Figure", command=self.debug)
         save_btn.grid(row=76, column=121, pady=1, padx=1)
         
     def __setup_labels(self)  -> None:
