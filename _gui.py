@@ -96,23 +96,23 @@ class Gui:
         save_btn.grid(row=76, column=121, pady=1, padx=1)
         
     def __setup_labels(self)  -> None:
-        self.l1 = tk.Label(self.root, anchor="w", width=10, text="Plot:")
-        self.l1.grid(row=10, column=120, pady=2)
+        l1 = tk.Label(self.root, anchor="w", width=10, text="Plot:")
+        l1.grid(row=10, column=120, pady=2)
         
-        self.l2 = tk.Label(self.root, anchor="w", width=10, text="Model:")
-        self.l2.grid(row=11, column=120, pady=2)
+        l2 = tk.Label(self.root, anchor="w", width=10, text="Model:")
+        l2.grid(row=11, column=120, pady=2)
         
-        self.l3 = tk.Label(self.root, anchor="w", width=10, text="x-axis:")
-        self.l3.grid(row=12, column=120, pady=2)
+        l3 = tk.Label(self.root, anchor="w", width=10, text="x-axis:")
+        l3.grid(row=12, column=120, pady=2)
         
-        self.l4 = tk.Label(self.root, anchor="w", width=10, text="y-axis")
-        self.l4.grid(row=13, column=120, pady=2)
+        l4 = tk.Label(self.root, anchor="w", width=10, text="y-axis")
+        l4.grid(row=13, column=120, pady=2)
         
-        self.l4 = tk.Label(self.root, anchor="w", width=10, text="L (u):")
-        self.l4.grid(row=14, column=120, pady=2)
+        l4 = tk.Label(self.root, anchor="w", width=10, text="L (u):")
+        l4.grid(row=14, column=120, pady=2)
         
-        self.l4 = tk.Label(self.root, anchor="w", width=10, text="VDS (V):")
-        self.l4.grid(row=15, column=120, pady=2)
+        l4 = tk.Label(self.root, anchor="w", width=10, text="VDS (V):")
+        l4.grid(row=15, column=120, pady=2)
         
     def __setup_dropdowns(self)  -> None:
         menus: dict[str, list[str]] = {
