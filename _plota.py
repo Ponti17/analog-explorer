@@ -6,11 +6,11 @@ class Plot:
         self.xaxis: str = ""
         self.yaxis: str = ""
         self.model: str = ""
-        self.logx: bool = False
-        self.invx: bool = False
+        self.logx: int = 0
+        self.invx: int = 0
         
-        self.vdsrc: list[str] = [""] # vds input
-        self.gateL: list[str] = [""] # gate length input
+        self.vdsrc: str = "" # vds input
+        self.gateL: str = "" # gate length input
         
     def setx(self, x: str) -> None:
         self.xaxis = x
@@ -21,16 +21,16 @@ class Plot:
     def setmodel(self, m: str) -> None:
         self.model = m
     
-    def setlogx(self, logx: bool) -> None:
+    def setlogx(self, logx: int) -> None:
         self.logx = logx
         
-    def setinvx(self, invx: bool) -> None:
+    def setinvx(self, invx: int) -> None:
         self.invx = invx
         
-    def setvdsrc(self, v: list[str]) -> None:
+    def setvdsrc(self, v: str) -> None:
         self.vdsrc = v
         
-    def setgateL(self, g: list[str]) -> None:
+    def setgateL(self, g: str) -> None:
         self.gateL = g
         
     def getx(self) -> str:
@@ -42,14 +42,14 @@ class Plot:
     def getmodel(self) -> str:
         return self.model
     
-    def getlogx(self) -> bool:
+    def getlogx(self) -> int:
         return self.logx
     
-    def getinvx(self) -> bool:
+    def getinvx(self) -> int:
         return self.invx
     
-    def getvdsrc(self) -> list[str]:
+    def getvdsrc(self) -> str:
         return self.vdsrc
     
-    def getgateL(self) -> list[str]:
+    def getgateL(self) -> str:
         return self.gateL
