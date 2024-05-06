@@ -6,6 +6,7 @@ import os
 class DataHandler:
     def __init__(self) -> None:
         self.df: pd.DataFrame = pd.DataFrame()
+        self.model: str = ""
         
     def load(self, model: str) -> None:
         modeldir  =     "models"
@@ -21,9 +22,13 @@ class DataHandler:
         try:
             file = os.path.join(modeldir, modellist[model] + ".pkl")
             self.df = pd.read_pickle(file)
+            self.model = model
         except:
             print("Invalid model or model not found: {}".format(model))
             exit()
+            
+    def get_loaded(self) -> str:
+        return self.model
 
     def getAxis(self, ax: str, vdsrc: str, gateL: str) -> npt.NDArray[np.float32]:
         match ax:
