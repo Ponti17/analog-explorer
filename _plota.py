@@ -6,11 +6,19 @@ class Plot:
         self.xaxis: str = ""
         self.yaxis: str = ""
         self.model: str = ""
+        self.vdsrc: str = ""
+        self.gateL: str = ""
         self.logx: int = 0
         self.invx: int = 0
         
-        self.vdsrc: str = "" # vds input
-        self.gateL: str = "" # gate length input
+    def valid(self) -> bool:
+        return all([
+            self.xaxis != "",
+            self.yaxis != "",
+            self.model != "",
+            self.vdsrc != "",
+            self.gateL != ""
+        ])
         
     def setx(self, x: str) -> None:
         self.xaxis = x
