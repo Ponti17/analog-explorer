@@ -76,10 +76,12 @@ class Gui:
         ax_a, ax_b, ax_c, ax_d = axs.flatten()
         
         for plot in self.plots.values():
+            if not plot.valid():
+                continue
             if plot.getmodel() != self.reader.get_loaded():
                 self.reader.load(plot.getmodel())
             ax_a.plot(self.reader.getAxis(plot.getx(), plot.getvdsrc(), plot.getgateL()), self.reader.getAxis(plot.gety(), plot.getvdsrc(), plot.getgateL()))
-        
+    
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
         canvas.get_tk_widget().grid(row=0, column=0, rowspan=80, columnspan=120, pady=10, padx=10, sticky="NSEW")
