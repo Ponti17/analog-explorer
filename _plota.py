@@ -57,7 +57,9 @@ class Plot:
         return self.invx
     
     def getvdsrc(self) -> str:
-        return self.vdsrc
+        vdsrc: str = str("{:.2e}".format(float(self.vdsrc)))
+        return vdsrc
     
     def getgateL(self) -> str:
-        return self.gateL
+        gateL: str = str("{:.2e}".format(float(self.gateL) * 1e-6))
+        return gateL
