@@ -92,6 +92,9 @@ class Gui:
             gateL   = plot.getgateL()
             vdsrc   = plot.getvdsrc()
             axes[key].plot(self.reader.getAxis(x, vdsrc, gateL), self.reader.getAxis(y, vdsrc, gateL))
+            axes[key].set_title(f"{plot.getmodel()} {x} vs {y}")
+            axes[key].set_xlabel(x, loc="left")
+            axes[key].set_ylabel(y)
     
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
