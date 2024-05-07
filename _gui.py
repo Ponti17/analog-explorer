@@ -164,17 +164,14 @@ class Gui:
         plot_menu.grid(row=10, column=121, pady=2, padx=(2, 10), sticky="ew")
         
         self.selected_model = StringVar(self.root)
-        self.selected_model.set(menus["models"][0])
         x_menu = tk.OptionMenu(self.root, self.selected_model, *menus["models"], command=self.__update_vars)
         x_menu.grid(row=11, column=121, pady=2, padx=(2, 10), sticky="ew")
         
         self.selected_x = StringVar(self.root)
-        self.selected_x.set(menus["axis"][3])
         x_menu = tk.OptionMenu(self.root, self.selected_x, *menus["axis"], command=self.__update_vars)
         x_menu.grid(row=12, column=121, pady=2, padx=(2, 10), sticky="ew")
         
         self.selected_y = StringVar(self.root)
-        self.selected_y.set(menus["axis"][1])
         x_menu = tk.OptionMenu(self.root, self.selected_y, *menus["axis"], command=self.__update_vars)
         x_menu.grid(row=13, column=121, pady=2, padx=(2, 10), sticky="ew")
 
