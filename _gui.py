@@ -74,13 +74,24 @@ class Gui:
         self.__update_objects()
         fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(5,4), dpi=100)
         ax_a, ax_b, ax_c, ax_d = axs.flatten()
+        axes = {
+            "a": ax_a,
+            "b": ax_b,
+            "c": ax_c,
+            "d": ax_d
+        }
         
-        for plot in self.plots.values():
+        for key in self.plots:
+            plot = self.plots[key]
             if not plot.valid():
                 continue
             if plot.getmodel() != self.reader.get_loaded():
                 self.reader.load(plot.getmodel())
-            ax_a.plot(self.reader.getAxis(plot.getx(), plot.getvdsrc(), plot.getgateL()), self.reader.getAxis(plot.gety(), plot.getvdsrc(), plot.getgateL()))
+            x       = plot.getx()
+            y       = plot.gety()
+            gateL   = plot.getgateL()
+            vdsrc   = plot.getvdsrc()
+            axes[key].plot(self.reader.getAxis(x, vdsrc, gateL), self.reader.getAxis(y, vdsrc, gateL))
     
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
