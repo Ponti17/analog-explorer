@@ -73,6 +73,7 @@ class Gui:
     def plot(self) -> None:
         self.__update_objects()
         fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(5,4), dpi=100)
+        fig.tight_layout(pad=1)
         ax_a, ax_b, ax_c, ax_d = axs.flatten()
         axes = {
             "a": ax_a,
@@ -95,6 +96,7 @@ class Gui:
             axes[key].set_title(f"{plot.getmodel()} {x} vs {y}")
             axes[key].set_xlabel(x, loc="left")
             axes[key].set_ylabel(y)
+            axes[key].grid()
     
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
