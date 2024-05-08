@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from tkinter import StringVar
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from _plota import Plot
+from _plot import Plot
 from _handledata import DataHandler
 
 class Gui:
