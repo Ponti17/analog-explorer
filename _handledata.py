@@ -30,7 +30,7 @@ class DataHandler:
     def get_loaded(self) -> str:
         return self.model
 
-    def getAxis(self, ax: str, vdsrc: str, gateL: str) -> npt.NDArray[np.float32]:
+    def get_axis(self, ax: str, vdsrc: str, gateL: str) -> npt.NDArray[np.float32]:
         match ax:
             case "gmro":
                 return self.__get_gmro(vdsrc, gateL)
