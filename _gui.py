@@ -178,11 +178,20 @@ class Gui:
         l4 = tk.Label(self.root, anchor="w", width=10, text="y-axis")
         l4.grid(row=13, column=120, pady=2)
         
-        l4 = tk.Label(self.root, anchor="w", width=10, text="L (u):")
-        l4.grid(row=14, column=120, pady=2)
+        l5 = tk.Label(self.root, anchor="w", width=10, text="L (u):")
+        l5.grid(row=14, column=120, pady=2)
         
-        l4 = tk.Label(self.root, anchor="w", width=10, text="VDS (V):")
-        l4.grid(row=15, column=120, pady=2)
+        l6 = tk.Label(self.root, anchor="w", width=10, text="VDS (V):")
+        l6.grid(row=15, column=120, pady=2)
+        
+        l7 = tk.Label(self.root, anchor="w", width=10, text="gm/ID Mode")
+        l7.grid(row=24, column=120, pady=2)
+        
+        l8 = tk.Label(self.root, anchor="w", width=10, text="gm/ID:")
+        l8.grid(row=25, column=120, pady=2)
+        
+        l9 = tk.Label(self.root, anchor="w", width=10, text="ID (nA):")
+        l9.grid(row=26, column=120, pady=2)
         
     def __setup_dropdowns(self)  -> None:
         menus: dict[str, list[str]] = {
@@ -213,6 +222,12 @@ class Gui:
         
         self.vdsrc_entry = tk.Entry(self.root, width=10)
         self.vdsrc_entry.grid(row=15, column=121, pady=2, padx=(2, 10))
+        
+        self.gmoverid_entry = tk.Entry(self.root, width=10)
+        self.gmoverid_entry.grid(row=25, column=121, pady=2, padx=(2, 10))
+        
+        self.id_entry = tk.Entry(self.root, width=10)
+        self.id_entry.grid(row=26, column=121, pady=2, padx=(2, 10))
         
     def __setup_checkboxes(self)  -> None:
         self.logx_var       = tk.IntVar()
