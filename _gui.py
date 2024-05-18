@@ -97,7 +97,10 @@ class Gui:
             vdsrc   = plot.getvdsrc()
             x_axis = self.reader.get_axis(x, vdsrc, gateL)
             y_axis = self.reader.get_axis(y, vdsrc, gateL)
-            axes[key].plot(x_axis, y_axis)
+            if x == "id/w":
+                axes[key].semilogx(x_axis, y_axis)
+            else:
+                axes[key].plot(x_axis, y_axis)
             axes[key].set_title(f"{plot.getmodel()} {x} vs {y}")
             axes[key].set_xlabel(x, loc="left")
             axes[key].set_ylabel(y)
