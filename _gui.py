@@ -71,7 +71,10 @@ class Gui:
             print(plot.getlogx())
         
     def plot(self) -> None:
-        self.__update_objects()
+        if self.get_checkbox("gmoverid_mode"):
+            self.gmid_plot()
+        else:
+            self.__update_objects()
         fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(5,4), dpi=100)
         fig.tight_layout(pad=1)
         ax_a, ax_b, ax_c, ax_d = axs.flatten()
@@ -101,6 +104,17 @@ class Gui:
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
         canvas.get_tk_widget().grid(row=0, column=0, rowspan=80, columnspan=120, pady=10, padx=10, sticky="NSEW")
+        
+    def gmid_plot(self) -> None:
+        for plot in self.plots.values():
+            plot.setgateL(self.get_entry("gateL"))
+            plot.setvdsrc(self.get_entry("vdsrc"))
+            plot.setmodel(self.get_entry("selected_model"))
+            plot.sety("gmoverid")
+        self.plots["a"].setx("vgs")
+        self.plots["b"].setx("gmro")
+        self.plots["c"].setx("id/w")
+        self.plots["d"].setx("ft")
         
     def get_entry(self, entry: str) -> str:
         match entry:
