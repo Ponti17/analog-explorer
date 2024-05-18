@@ -95,11 +95,20 @@ class Gui:
             y       = plot.gety()
             gateL   = plot.getgateL()
             vdsrc   = plot.getvdsrc()
-            axes[key].plot(self.reader.get_axis(x, vdsrc, gateL), self.reader.get_axis(y, vdsrc, gateL))
+            x_axis = self.reader.get_axis(x, vdsrc, gateL)
+            y_axis = self.reader.get_axis(y, vdsrc, gateL)
+            axes[key].plot(x_axis, y_axis)
             axes[key].set_title(f"{plot.getmodel()} {x} vs {y}")
             axes[key].set_xlabel(x, loc="left")
             axes[key].set_ylabel(y)
             axes[key].grid()
+            
+            # Highlight chosen gm/ID in gm/ID mode
+            if self.get_checkbox("gmoverid_mode") and self.gmoverid_entry.get() != "":
+                gmoverid: float = float(self.gmoverid_entry.get())
+                minx = min(x_axis.tolist())
+                maxx = max(x_axis.tolist())
+                axes[key].hlines(gmoverid, minx, maxx, colors='r', linestyles='dashed')
     
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
