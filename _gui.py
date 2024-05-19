@@ -1,6 +1,7 @@
 import tkinter as tk
 import matplotlib.pyplot as plt
 import numpy as np
+import numpy.typing as npt
 from tkinter import StringVar
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from _plot import Plot
@@ -114,10 +115,31 @@ class Gui:
                 minx = min(x_axis.tolist())
                 maxx = max(x_axis.tolist())
                 axes[key].hlines(gmoverid, minx, maxx, colors='r', linestyles='dashed')
-    
+                
+                if self.id_entry.get() != "":
+                    self.gmoverid_calculate(gmoverid, y_axis, x_axis, x, float(self.id_entry.get()))
+                        
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
         canvas.get_tk_widget().grid(row=0, column=0, rowspan=80, columnspan=120, pady=10, padx=10, sticky="NSEW")
+        
+    def gmoverid_calculate(self, gmoverid: float, y_axis: npt.NDArray[np.float64], x_axis: npt.NDArray[np.float64], x: str, id: float) -> None:
+        for i in range(len(y_axis)):
+            if y_axis[i] < gmoverid:
+                val = x_axis[i][0]
+                gmoverid = y_axis[i][0]
+                break
+        if x == "vgs":
+            self.gmoverid_labels["vgs"].config(     text = str("{:.2e}".format(val)))
+        elif x == "gmro":
+            self.gmoverid_labels["gmro"].config(    text = str("{:.2e}".format(val)))
+        elif x == "id/w":
+            self.gmoverid_labels["w"].config(       text = str("{:.2e}".format((id*1e-9)/val)))
+        elif x == "ft":
+            self.gmoverid_labels["ft"].config(      text = str("{:.2e}".format(val)))
+        # Update these once
+        if self.gmoverid_labels["gm/id"].cget("text") != str("{:.2e}".format(gmoverid)):
+            self.gmoverid_labels["gm/id"].config(   text = str("{:.2e}".format(gmoverid)))
         
     def gmid_plot(self) -> None:
         for plot in self.plots.values():
@@ -206,6 +228,54 @@ class Gui:
         
         l9 = tk.Label(self.root, anchor="w", width=10, text="ID (nA):")
         l9.grid(row=26, column=120, pady=2)
+        
+        # gm/ID mode labels
+        l10 = tk.Label(self.root, anchor="w", width=10, text="vgs:")
+        l10.grid(row=28, column=120, pady=2)
+        
+        l11 = tk.Label(self.root, anchor="w", width=10, text="gm/id:")
+        l11.grid(row=29, column=120, pady=2)
+        
+        l12 = tk.Label(self.root, anchor="w", width=10, text="gmro:")
+        l12.grid(row=30, column=120, pady=2)
+        
+        l13 = tk.Label(self.root, anchor="w", width=10, text="vdsat:")
+        l13.grid(row=31, column=120, pady=2)
+        
+        l14 = tk.Label(self.root, anchor="w", width=10, text="ft:")
+        l14.grid(row=32, column=120, pady=2)
+        
+        l15 = tk.Label(self.root, anchor="w", width=10, text="w:")
+        l15.grid(row=33, column=120, pady=2)
+        
+        # gm/ID mode output
+        
+        l16 = tk.Label(self.root, anchor="w", width=10, text="0.0")
+        l16.grid(row=28, column=121, pady=2)
+        
+        l17 = tk.Label(self.root, anchor="w", width=10, text="0.0")
+        l17.grid(row=29, column=121, pady=2)
+        
+        l18 = tk.Label(self.root, anchor="w", width=10, text="0.0")
+        l18.grid(row=30, column=121, pady=2)
+        
+        l19 = tk.Label(self.root, anchor="w", width=10, text="0.0")
+        l19.grid(row=31, column=121, pady=2)
+        
+        l20 = tk.Label(self.root, anchor="w", width=10, text="0.0")
+        l20.grid(row=32, column=121, pady=2)
+        
+        l21 = tk.Label(self.root, anchor="w", width=10, text="0.0")
+        l21.grid(row=33, column=121, pady=2)
+        
+        self.gmoverid_labels = {
+            "vgs":      l16,
+            "gm/id":    l17,
+            "gmro":     l18,
+            "vdsat":    l19,
+            "ft":       l20,
+            "w":        l21
+            }
         
     def __setup_dropdowns(self)  -> None:
         menus: dict[str, list[str]] = {
