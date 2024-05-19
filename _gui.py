@@ -122,13 +122,15 @@ class Gui:
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
         canvas.get_tk_widget().grid(row=0, column=0, rowspan=80, columnspan=120, pady=10, padx=10, sticky="NSEW")
-        
+    
+    def find_nearest(self, array: npt.NDArray[np.float64], value: float) -> int:
+        array   = np.asarray(array)
+        idx     = int((np.abs(array - value)).argmin())
+        return idx
+    
     def gmoverid_calculate(self, gmoverid: float, y_axis: npt.NDArray[np.float64], x_axis: npt.NDArray[np.float64], x: str, id: float) -> None:
-        for i in range(len(y_axis)):
-            if y_axis[i] < gmoverid:
-                val = x_axis[i][0]
-                gmoverid = y_axis[i][0]
-                break
+        idx = self.find_nearest(y_axis, gmoverid)
+        val = x_axis[idx][0]
         if x == "vgs":
             self.gmoverid_labels["vgs"].config(     text = str("{:.2e}".format(val)))
         elif x == "gmro":
