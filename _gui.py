@@ -123,6 +123,10 @@ class Gui:
         canvas.draw()
         canvas.get_tk_widget().grid(row=0, column=0, rowspan=80, columnspan=120, pady=10, padx=10, sticky="NSEW")
         
+    def on_closing_window(self) -> None:
+        self.root.destroy()
+        exit()
+        
     def save_fig(self) -> None:
         filename = tk.filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf"), ("PNG files", "*.png")])
         plt.savefig(filename)
@@ -192,6 +196,7 @@ class Gui:
         self.root = tk.Tk()
         self.root.title("Analog Explorer")
         self.root.iconbitmap('nmos.ico')
+        self.root.protocol("WM_DELETE_WINDOW", lambda:self.on_closing_window())
         
     def __run_tk(self) -> None:
         self.root.mainloop()
@@ -255,7 +260,6 @@ class Gui:
         l15.grid(row=33, column=120, pady=2)
         
         # gm/ID mode output
-        
         l16 = tk.Label(self.root, anchor="w", width=10, text="0.0")
         l16.grid(row=28, column=121, pady=2)
         
