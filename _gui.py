@@ -98,9 +98,11 @@ class Gui:
             x_axis = self.reader.get_axis(x, vdsrc, gateL)
             y_axis = self.reader.get_axis(y, vdsrc, gateL)
             if x == "id/w":
-                axes[key].semilogx(x_axis, y_axis)
+                axes[key].semilogx(x_axis, y_axis, label="L = {0}, VDS = {1}".format(gateL, vdsrc))
             else:
-                axes[key].plot(x_axis, y_axis)
+                axes[key].plot(x_axis, y_axis, label="L = {0}, VDS = {1}".format(gateL, vdsrc))
+            if self.get_checkbox("show_legend"):
+                axes[key].legend()
             axes[key].set_title(f"{plot.getmodel()} {x} vs {y}")
             axes[key].set_xlabel(x, loc="left")
             axes[key].set_ylabel(y)
