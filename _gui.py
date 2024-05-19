@@ -122,6 +122,10 @@ class Gui:
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
         canvas.get_tk_widget().grid(row=0, column=0, rowspan=80, columnspan=120, pady=10, padx=10, sticky="NSEW")
+        
+    def save_fig(self) -> None:
+        filename = tk.filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf"), ("PNG files", "*.png")])
+        plt.savefig(filename)
     
     def find_nearest(self, array: npt.NDArray[np.float64], value: float) -> int:
         array   = np.asarray(array)
@@ -200,7 +204,7 @@ class Gui:
         plot_btn = tk.Button(master=self.root, width=10, height=1, text="Plot", command=self.plot)
         plot_btn.grid(row=76, column=120, pady=1, padx=1)
         
-        save_btn = tk.Button(master=self.root, width=10, height=1, text="Save Figure", command=self.debug)
+        save_btn = tk.Button(master=self.root, width=10, height=1, text="Save Figure", command=self.save_fig)
         save_btn.grid(row=76, column=121, pady=1, padx=1)
         
     def __setup_labels(self)  -> None:
