@@ -103,11 +103,11 @@ class Gui:
             else:
                 axes[key].plot(x_axis, y_axis, label="L = {0}, VDS = {1}".format(gateL, vdsrc))
             if self.get_checkbox("show_legend"):
-                axes[key].legend()
+                axes[key].legend(loc="upper left")
             axes[key].set_title(f"{plot.getmodel()} {x} vs {y}")
             axes[key].set_xlabel(x, loc="left")
             axes[key].set_ylabel(y)
-            axes[key].grid()
+            axes[key].grid(linestyle='--')
             
             # Highlight chosen gm/ID in gm/ID mode
             if self.get_checkbox("gmoverid_mode") and self.gmoverid_entry.get() != "":
