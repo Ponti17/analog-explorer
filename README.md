@@ -1,12 +1,90 @@
-## Elevator Pitch
+<a name="readme-top"></a>
 
-You're an analog IC designer. Oh well. Time to do some rough hand calculations based on overdrive voltage only to plug the widths and length into Cadence Virtuoso and find out _nothing_ is working when you fire up ADE L... _Again_... You've heard of the gm/id method and find it intriguing only to fumble around five different plots of reference curves you made months ago. There must be an easier way...
+<br />
+<div align="center">
+  <a href="https://github.com/Ponti17/analog-explorer">
+    <img src="media/python-logo-master-v3.png" alt="Logo" width=400>
+  </a>
 
-If you're a simple mortal like me who would like to make the process of gm/id a bit less painful then the python-analog-designer might be for you.
+<h3 align="center">Analog Explorer</h3>
+  <p align="center">
+    A graphical user interface for quickly finding transistor operating points.
+    <br />
+  </p>
+</div>
 
-## Table of contents
-TODO
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#how-it-works">How it Works</a></li>
+    <li><a href="#license">License</a></li>
+  </ol>
+</details>
 
-## Features
+## About The Project
 
-### Plot relevant gm/id curves
+Written as part of my Bsc thesis during spring 2024 to help with the design of several analog CMOS circuits. The tool takes transistor models created with [SPICE](https://en.wikipedia.org/wiki/SPICE) and is designed to be used with the [gm/id method](http://web02.gonzaga.edu/faculty/talarico/EE406/documents/gmid.pdf).
+
+## Getting Started
+
+If you're interested in using this useful (but really rather limited) tool, you can do the following.
+
+### Prerequisites
+
+Install the following dependencies via pip
+
+   ```sh
+   pip install numpy
+   pip install matplotlib
+   pip install tkinter
+   pip install pandas
+   ```
+
+### Installation
+
+Clone this repo by
+
+   ```sh
+   git clone https://github.com/Ponti17/analog-explorer.git
+   ```
+
+### Model Generation
+
+The following steps describe how to generate Analog Explorer compatible models in Cadence Virtuoso.
+
+Place desired model in schematic. If the device is n-type connect it as follows:
+
+![n-type-connection](media/n-type-con.png)
+
+It is important to set w=width and l=length as well as naming the sources vgs and vds. Start ADE L and add a dc analysis sweeping vgs from 0 to VDD. Use the following settings.
+
+![ade-l-settings](media/ade-l.png)
+
+Note that the values for vgs, vds and length in Design Variables do not matter. It is however important to set the width to 1u. Now select Tools>Parametric Analysis. Sweep vds from 0 to VDD and length from min to max. A smaller step size gives a higher fidelity for the model. Note that the total simulation time quickly increases with lower step sizes. See below for suggested settings.
+
+![ade-l-settings](media/parametric.png)
+
+When the simulation is done go to Tools>Results Browser. Select dc, under signals select all and export as csv.
+
+![result-browser](media/result-browser.png)
+
+The model is now finished.
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
