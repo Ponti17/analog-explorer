@@ -160,8 +160,8 @@ class Gui:
         
     def __init_tk(self) -> None:
         self.root = tk.Tk()
-        self.root.title("analog-py-designer")
-        self.root.after(201, lambda :self.root.iconbitmap('bjt.ico'))
+        self.root.title("Analog Explorer")
+        self.root.iconbitmap('nmos.ico')
         
     def __run_tk(self) -> None:
         self.root.mainloop()
