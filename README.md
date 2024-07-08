@@ -35,9 +35,23 @@
 
 Written as part of my Bsc thesis during spring 2024 to help with the design of several analog CMOS circuits. The tool takes transistor models created with [SPICE](https://en.wikipedia.org/wiki/SPICE) and is designed to be used with the [gm/id method](http://web02.gonzaga.edu/faculty/talarico/EE406/documents/gmid.pdf).
 
+## Usage
+
+Analog explorer present a GUI for exploring the possible design space of CMOS transistors.
+
+![analog-explorer-img](media/analog-explorer-img.png)
+
+Choose a device, input VDS and length, and Analog Explorer will plot relevant figures of merits for determing transistor area, speed, gain and noise.
+
+![analog-explorer-1](media/analog-explorer-1.gif)
+
+Input a chosen operating point in terms of gm/ID and a operating current, and Analog Explorer will print exact device characterisatics and dimensions to achieve said performance.
+
+![analog-explorer-2](media/analog-explorer-2.gif)
+
 ## Getting Started
 
-If you're interested in using this useful (but really rather limited) tool, you can do the following.
+If you're interested in using this useful tool, you can do the following.
 
 ### Prerequisites
 
