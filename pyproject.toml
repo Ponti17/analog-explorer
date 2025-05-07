@@ -1,11 +1,17 @@
 [project]
-name = "py-analog-designer"
-version = "0.0.1"
-authors =  [
-    {name = "Andreas Pedersen", email = "andreas@pedersenmail.com"}
+name = "analog-explorer"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "andreasp",email = "andreas.s.p00@gmail.com"}
 ]
-description = "TBA"
-license = "MIT"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+]
+package-mode = false
 
-[tool.mypy]
-strict = true
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

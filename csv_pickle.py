@@ -1,5 +1,5 @@
 import pandas as pd
 
-filename = "nch_full_sim.csv"
+filename = "nmos_rf.csv"
 df = pd.read_csv(filename)
-df.to_pickle("nch_full_sim.pkl")
+df.to_pickle("nmos_rf_sim.pkl")

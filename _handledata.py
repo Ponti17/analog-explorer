@@ -10,14 +10,7 @@ class DataHandler:
         
     def load(self, model: str) -> None:
         modeldir  =     "models"
-        modellist =    {"nch":        "nch_full_sim",
-                        "nch_25":     "nch_25_full_sim",
-                        "nch_hvt":    "nch_hvt_full_sim",
-                        "nch_lvt":    "nch_lvt_full_sim",
-                        "pch":        "pch_full_sim",
-                        "pch_25":     "pch_25_full_sim",
-                        "pch_hvt":    "pch_hvt_full_sim",
-                        "pch_lvt":    "pch_lvt_full_sim"}
+        modellist =    {"nmos_rf":    "nmos_rf_sim"}
 
         try:
             file = os.path.join(modeldir, modellist[model] + ".pkl")
@@ -44,9 +37,9 @@ class DataHandler:
     def __get_simple(self, ax: str, vdsrc: str, gateL: str) -> npt.NDArray[np.float64]:
         # This regex string is a steaming pile of shit, but it essentially ANDs 4 conditions
         if "pch" in self.model:
-            regex_str: str = "(?=.*M0:{})(?=.*vsd={})(?=.*length={})(?=.*Y)".format(ax, vdsrc, gateL).replace("+", "\\+")
+            regex_str: str = "(?=.*M0:{})(?=.*vsd={})(?=.*L={})(?=.*Y)".format(ax, vdsrc, gateL).replace("+", "\\+")
         else:
-            regex_str: str = "(?=.*M0:{})(?=.*vds={})(?=.*length={})(?=.*Y)".format(ax, vdsrc, gateL).replace("+", "\\+")
+            regex_str: str = "(?=.*M0:{})(?=.*vds={})(?=.*L={})(?=.*Y)".format(ax, vdsrc, gateL).replace("+", "\\+")
         return self.df.filter(regex=regex_str).to_numpy()
     
     def __get_gmro(self, vdsrc: str, gateL: str) -> npt.NDArray[np.float64]:

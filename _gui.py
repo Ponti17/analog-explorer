@@ -290,7 +290,7 @@ class Gui:
     def __setup_dropdowns(self)  -> None:
         menus: dict[str, list[str]] = {
         "plots":    ["a", "b", "c", "d"],
-        "models":   ["nch", "nch_25", "nch_hvt", "nch_lvt", "pch", "pch_25", "pch_hvt", "pch_lvt"],
+        "models":   ["nmos_rf"],
         "axis":     ["vgs", "gmoverid", "gmro", "id/w"]}
 
         self.selected_plot = StringVar(self.root)
